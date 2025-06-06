@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 def tab_interval(x, y, min, max):
-    """Choose bounds in tab1, return the corresponding values in tab 1 and tab 2"""
+    """Choose bounds in x, return the corresponding values in x and y"""
     idx_min = 0
     idx_max = 0
     tab = []
