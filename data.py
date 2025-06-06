@@ -1,0 +1,88 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+#Constants
+
+mY = 88.905
+mBa = 137.3270
+mCu = 63.5460
+mO = 15.9994
+masse_molaire = 666.22 #g.mol
+masse_sample = 8.45e-3 #g
+
+# File reading
+
+data_file = open("fork_HPHT_YBCO.txt", "r" ,  encoding="latin-1")
+lignes = data_file.readlines()
+data_file.close()
+
+idx_data = 12 #line of "data"
+
+# Header line after "Data"
+header_line = lignes[idx_data + 1].strip()
+noms_colonnes = [c.strip() for c in header_line.split(",")]
+donnees_lignes = lignes[idx_data + 2:]
+
+# Dictionnary empty with lists for colonns
+colonnes = {nom: [] for nom in noms_colonnes}
+
+# Fill the dictionnary
+for ligne in donnees_lignes:
+    if not ligne.strip():
+        continue  # ignorer lignes vides
+    champs = ligne.strip().split(",")
+    if len(champs) != len(noms_colonnes):
+        continue  # ignorer lignes incomplètes
+
+    for nom, valeur in zip(noms_colonnes, champs):
+        try:
+            colonnes[nom].append(float(valeur))
+        except ValueError:
+            colonnes[nom].append(np.nan)  # ou None si tu préfères
+
+# Arrays:
+
+temperature = np.array(colonnes["Sample Temp (Kelvin)"])
+sample_HC = np.array(colonnes["Samp HC (mJ/mole-K)"]) #final heat capacity (without the addenda), mJ/K.mol
+addenda_HC = np.array(colonnes["Addenda HC (µJ/K)"]) #addenda heat capacity microJ/K
+total_HC = np.array(colonnes["Total HC (µJ/K)"]) #row measurment microJ/mol
+err_sample_HC = np.array(colonnes["Samp HC Err (mJ/mole-K)"]) #error on final HC
+err_temperature = np.zeros(len(err_sample_HC)) #no error in the data concerninf temperature
+
+#Test : qui est le soustrait ? si le samp est le soustrait samp_HC = total_HC - addenda_HC -> vérifié
+
+#test_soustrait = total_HC - addenda_HC #en microJ/K
+#test_samp_HC = 1e-3*test_soustrait*masse_molaire/masse_sample #en g/mol
+
+#print(test_samp_HC[:4], samp_HC[:4])
+
+# Plot of HC(T)
+
+def plot_HC_T() :
+    plt.figure()
+    plt.plot(temperature, sample_HC,".g")
+    plt.title("Heat capacity of YBCO function of temperature")
+    plt.errorbar(temperature, sample_HC, err_sample_HC, err_temperature, "g+")
+    plt.ylabel("Heat capacity (mJ/K.mol)")
+    plt.xlabel("Temperature (K)")
+    plt.show()
+
+# Plot of HC/T (T**2)
+
+def plot_HC_divT() :
+    sampleHC_div_T = sample_HC/temperature #mJ/K**2.mol
+    squared_temperature = temperature**2 #K**2
+    err_HC_divT = err_sample_HC/temperature
+    plt.figure()
+    plt.plot(squared_temperature, sampleHC_div_T, ".g")
+    plt.errorbar(squared_temperature, sampleHC_div_T, err_HC_divT, err_temperature, "g+")
+    plt.ylabel("C/T (mJ/K².mol)")
+    plt.xlabel("T² (K²)")
+    plt.show()
+
+def main() :
+    plot_HC_T()
+
+if __name__ == "__main__":
+    main()
