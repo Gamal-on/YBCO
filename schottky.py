@@ -1,15 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
-from data import temperature
-from data import sample_HC
-from data import err_sample_HC
-from data import err_temperature
-from tools import resol_nr, dicho_1
-
-squared_temperature = temperature**2  # K**2
-C_div_T = sample_HC/temperature  # mJ/K**2.mol
-err_C_divT = err_sample_HC/temperature
+import tools
 
 # Constantes et tableaux
 
@@ -18,10 +9,20 @@ delta = 2.9461005*k
 temp = np.arange(0, 3, 1e-3)
 
 
-def schottky(T, E, n=1):
+def max_schottky(x, y, min, max):
+    """Find the maximum of the Schottky anomaly in a given interval"""
+    x_interval, y_interval = tools.tab_interval(x, y, min, max)
+    maxi, i = tools.maximum(y_interval)
+    x_maxi = x_interval[i]
+    return x_maxi, maxi
+
+
+def schottky(T, E, n=1, r=8.31446261815324, na=6.02214076e23, k=1.380649e-23):
+    """Calculate the Schottky anomaly"""
+    """T: temperature in Kelvin, E: energy in Joules, n: number of particles, k: Boltzmann constant"""
     x = (E)/(k*T)
-    cs = k*(x**2)*(np.exp(x)/(1+np.exp(x))**2)
-    return n*cs
+    cs = (x**2)*(np.exp(x)/(1+np.exp(x))**2)
+    return r*cs
 
 
 def dev_schottky(T, E, n=1):
@@ -54,11 +55,3 @@ def f(x):
 
 def fp(x):
     return 1 + 2*np.exp(x) - np.exp(x) - x*np.exp(x)
-
-
-def main():
-    print(dicho_1(f, 1e-10, 2.3, 2.5))
-
-
-if __name__ == "__main__":
-    main()

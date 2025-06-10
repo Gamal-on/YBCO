@@ -112,7 +112,7 @@ def schottky(T, E, n=1, r=8.31446261815324):
     """Calculate the Schottky anomaly"""
     """T: temperature in Kelvin, E: energy in Joules, n: number of particles, k: Boltzmann constant"""
     x = (E)/(k*T)
-    cs = k*(x**2)*(np.exp(x)/(1+np.exp(x))**2)
+    cs = (x**2)*(np.exp(x)/(1+np.exp(x))**2)
     return n*r*cs
 
 
