@@ -17,7 +17,7 @@ def max_schottky(x, y, min, max):
     return x_maxi, maxi
 
 
-def schottky(T, E, n=1, r=8.31446261815324, na=6.02214076e23, k=1.380649e-23):
+def schottky(T, E, n=1, r=8.31446261815324e3, na=6.02214076e23, k=1.380649e-23):
     """Calculate the Schottky anomaly"""
     """T: temperature in Kelvin, E: energy in Joules, n: number of particles, k: Boltzmann constant"""
     x = (E)/(k*T)
