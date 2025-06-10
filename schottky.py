@@ -22,7 +22,7 @@ def schottky(T, E, n=1, r=8.31446261815324, na=6.02214076e23, k=1.380649e-23):
     """T: temperature in Kelvin, E: energy in Joules, n: number of particles, k: Boltzmann constant"""
     x = (E)/(k*T)
     cs = (x**2)*(np.exp(x)/(1+np.exp(x))**2)
-    return r*cs
+    return n*r*cs
 
 
 def dev_schottky(T, E, n=1):
