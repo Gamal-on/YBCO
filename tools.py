@@ -130,23 +130,7 @@ def dev_schottky(T, E, n=1, k=1.380649e-23):
 
 def max_schottky(x, y, min, max):
     """Find the maximum of the Schottky anomaly in a given interval"""
-    """x: array of x values, y: array of y values, min: minimum x value, max: maximum x value"""
     x_interval, y_interval = tab_interval(x, y, min, max)
     maxi, i = maximum(y_interval)
     x_maxi = x_interval[i]
     return x_maxi, maxi
-
-
-def energie(x, y, min, max, k=1.380649e-23):
-    """Calculate the energy at the maximum of the Schottky anomaly in a given interval"""
-    """x: array of x values, y: array of y values, min: minimum x value squared, max: maximum x value squared"""
-    x_maxi, maxi = max_schottky(x, y, min, max)
-    return 2.4*np.sqrt(x_maxi)*k
-
-
-def main():
-    pass
-
-
-if __name__ == "__main__":
-    main()
