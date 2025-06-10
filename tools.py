@@ -38,9 +38,6 @@ def maximum(tab):
             idx_max = i
     return max, idx_max
 
-
-test = np.array([2, 56, 2, 45, 234, 89, 6])
-
 # Plot
 
 
@@ -134,3 +131,4 @@ def max_schottky(x, y, min, max):
     maxi, i = maximum(y_interval)
     x_maxi = x_interval[i]
     return x_maxi, maxi
+
