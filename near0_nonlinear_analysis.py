@@ -37,12 +37,46 @@ def fit_func(x, beta, gamma, n):
 def nonlinear_fit(N):
     fit = opt.curve_fit(fit_func, squared_temperature[0:N], C_div_T[0:N],
                         sigma=err_C_divT[0:N], absolute_sigma=True)
-
     return fit[0]
 
 
+def plot_fit(N, beta, gamma, n):
+    plt.figure()
+    plt.plot(squared_temperature[0:N], fit_func(
+        squared_temperature[0:N], beta, gamma, n), "g--", label="Fit")
+    plt.plot(squared_temperature[0:N], C_div_T[0:N],
+             "ob", label="C/T xperimental")
+    plt.grid(True)
+    plt.xlabel(r'T² (K²)')
+    plt.ylabel(r'C/T (mJ/K².mol)')
+    plt.legend()
+    plt.show()
+
+# Debye temperature
+
+
+def debye_temperature(N):
+    """
+    Calculate the Debye temperature from the fit parameters
+    Returns the Debye temperature in K and gamma in J/K².mol"""
+    beta = nonlinear_fit(N)[0]*1e-3  # conversion en J/K⁴.mol
+    pi4 = np.pi**4
+    theta_D = (r*pi4*12)/(5*beta)  # en K³
+    return np.cbrt(theta_D)
+
+
+# Main function to run the analysis and plot the fit
+
+def final():
+    N = int(input("Enter the number of data points to fit (N): "))
+    beta, gamma, n = nonlinear_fit(N)  # en mJ
+    plot_fit(N, beta, gamma, n)
+    print("Debye temperature:", debye_temperature(N),
+          "K", "Gamma : ", gamma, "mJ/K².mol", "n : ", n),
+
+
 def main():
-    print(nonlinear_fit(65, 1e-2))
+    final()
 
 
 if __name__ == "__main__":
