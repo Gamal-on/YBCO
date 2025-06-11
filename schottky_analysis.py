@@ -60,6 +60,7 @@ def alpha():
 
 # Recherche de T_max dans nos données expérimentales, comme étant la temérature à laquelle la dérivée de la Schottky est nulle.
 # Intervalle de recherche entre 0 et 10 K²
+# T_max trouvée : 2.9461005 K
 
 
 def max_schottky(x, y, min, max):
@@ -71,9 +72,25 @@ def max_schottky(x, y, min, max):
     x_maxi = x_interval[i]
     return x_maxi, maxi
 
+# Plot Schottky théorique aec les paramètres expérimentaux
+# n pris aléatoirement entre 1e-3 et 1e-2
+
+
+def plot_schottky(T):
+    n = float(input("Enter the number of defaults : "))
+    N = int(input("Enter the number of values to plot : "))
+    E_exp = k*alpha()*max_schottky(temperature, C_div_T, 0, 3)[0]
+    plt.figure()
+    plt.plot(T[0:N], schottky(temperature, E_exp, n)[0:N], "g--")
+    plt.ylabel("C/T (mJ/K².mol)")
+    plt.xlabel("T (K) (or T²)")
+    plt.title("Schottky anomaly, plot with experimental parameters")
+    plt.grid(True)
+    plt.show()
+
 
 def main():
-    print(max_schottky(temperature, C_div_T, 0, 3))
+    plot_schottky(temperature)
 
 
 if __name__ == "__main__":
