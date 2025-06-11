@@ -16,16 +16,17 @@ err_C_divT = err_sample_HC/temperature
 # Constantes et tableaux
 
 k = 1.380649e-23
+r = 8.31446261815324  # J/mol.K
 
 # Functions
 
 
-def schottky(T, E, n=1, r=8.31446261815324e3, na=6.02214076e23, k=1.380649e-23):
-    """Calculate the Schottky anomaly"""
+def schottky(T, E, n=1e-2):
+    """Calculate the Schottky anomaly in mJ/K.mol"""
     """T: temperature in Kelvin, E: energy in Joules, n: number of particles, k: Boltzmann constant"""
     x = (E)/(k*T)
     cs = (x**2)*(np.exp(x)/(1+np.exp(x))**2)
-    return n*r*cs
+    return n*r*1e3*cs
 
 
 def dev_schottky(T, E, n=1):
@@ -88,9 +89,15 @@ def plot_schottky(T):
     plt.grid(True)
     plt.show()
 
+# Results
+
+
+T_max = max_schottky(temperature, C_div_T, 0, 3)[0]
+E_exp = k*alpha()*max_schottky(temperature, C_div_T, 0, 3)[0]
+
 
 def main():
-    plot_schottky(temperature)
+    plot_schottky(squared_temperature)
 
 
 if __name__ == "__main__":
