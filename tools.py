@@ -104,30 +104,3 @@ def simpson(f, a, b, n):
         x1 = x + dx
         somme += (f(x) + 4*f((x + x1)/2) + f(x1))
     return (b-a)/(6*n) * somme
-
-# Schottky
-
-
-# def schottky(T, E, n=1, r=8.31446261815324, k=1.380649e-23):
-    """Calculate the Schottky anomaly"""
-    """T: temperature in Kelvin, E: energy in Joules, n: number of particles, k: Boltzmann constant"""
-    x = (E)/(k*T)
-    cs = (x**2)*(np.exp(x)/(1+np.exp(x))**2)
-    return n*r*cs
-
-
-# def dev_schottky(T, E, n=1, k=1.380649e-23):
-    """Calculate the derivative of the Schottky anomaly"""
-    a = E / k
-    exp_at = np.exp(a / T)
-    num = (2 * T + a) * exp_at + (2 * T - a) * (exp_at ** 2)
-    denom = (T ** 4) * (1 + exp_at) ** 3
-    return - n * k * (a ** 2) * num / denom
-
-
-# def max_schottky(x, y, min, max):
-    """Find the maximum of the Schottky anomaly in a given interval"""
-    x_interval, y_interval = tab_interval(x, y, min, max)
-    maxi, i = maximum(y_interval)
-    x_maxi = x_interval[i]
-    return x_maxi, maxi
