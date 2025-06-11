@@ -69,7 +69,9 @@ def debye_temperature(N, n):
 
 # Main function to run the analysis and plot results
 
-def final(N, n):
+def final():
+    N = int(input("Enter the number of data points to consider (N): "))
+    n = float(input("Enter the value of defaults n : "))
     plot_linear_fit(N, n)
     debye_temp = debye_temperature(N, n)
     print("Debye temperature:", debye_temp[0],
@@ -78,7 +80,7 @@ def final(N, n):
 
 
 def main():
-    final(65, 1e-3)
+    final()
 
 
 if __name__ == "__main__":
