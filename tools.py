@@ -104,3 +104,15 @@ def simpson(f, a, b, n):
         x1 = x + dx
         somme += (f(x) + 4*f((x + x1)/2) + f(x1))
     return (b-a)/(6*n) * somme
+
+
+def integrate(x, y, a, b):
+    tab_integrated = [0]
+    compt = 0
+    x_interval, y_interval = tab_interval(x, y, a, b)
+    for i in range(0, len(y_interval)):
+        aire = (y_interval[i+1] - y_interval[i]) * \
+            (x_interval[i+1] - x_interval[i])
+        tab_integrated.append(aire + compt)
+        compt += aire
+    return tab_integrated

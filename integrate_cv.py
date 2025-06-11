@@ -19,3 +19,4 @@ alpha = 2.399357318878174
 squared_temperature = temperature**2  # K**2
 C_div_T = sample_HC/temperature  # mJ/K**2.mol
 err_C_divT = err_sample_HC/temperature
+
