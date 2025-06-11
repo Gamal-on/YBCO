@@ -20,13 +20,13 @@ err_C_divT = err_sample_HC/temperature
 k = 1.380649e-23
 r = 8.31446261815324  # J/mol.K
 
-# Test
-
 
 # Substracted values
 
 
 def plot_substracted(N, n):
+    """
+    Plot the substracted values of C/T - C_schottky vs T²"""
     C_divT_substracted = C_div_T - schottky(temperature,
                                             E_exp, n)/temperature  # mJ/K**2.mol
     plt.figure()
@@ -41,6 +41,9 @@ def plot_substracted(N, n):
 # Linear fit : (C/T - C_schottky) (T²)
 
 def linear_fit(N, n):
+    """
+    Perform a linear fit on the substracted values of C/T - C_schottky vs T²
+    Returns the fit parameters (beta, gamma, n) in mJ/K⁴.mol"""
     C_divT_substracted = C_div_T - schottky(temperature,
                                             E_exp, n)/temperature  # mJ/K**2.mol
     fit = ft.linfitxy(
@@ -49,6 +52,8 @@ def linear_fit(N, n):
 
 
 def plot_linear_fit(N, n):
+    """
+    Plot the linear fit of the substracted values of C/T - C_schottky vs T²"""
     C_divT_substracted = C_div_T - schottky(temperature,
                                             E_exp, n)/temperature  # mJ/K**2.mol
     fit = ft.linfitxy(squared_temperature[0:N], C_divT_substracted[0:N], err_temperature[0:N], err_C_divT[0:N],
@@ -61,6 +66,9 @@ def plot_linear_fit(N, n):
 # Debye temperature and gamma
 
 def debye_temperature(N, n):
+    """
+    Calculate the Debye temperature and gamma from the linear fit parameters
+    Returns the Debye temperature in K and gamma in J/K².mol"""
     beta, gamma = linear_fit(N, n)[0:2]*1e-3  # conversion en J/K⁴.mol
     pi4 = np.pi**4
     theta_D = (r*pi4*12)/(5*beta)  # en K³
@@ -70,6 +78,8 @@ def debye_temperature(N, n):
 # Main function to run the analysis and plot results
 
 def final():
+    """
+    Main function to run the analysis and plot results."""
     N = int(input("Enter the number of data points to consider (N): "))
     n = float(input("Enter the value of defaults n : "))
     plot_linear_fit(N, n)
