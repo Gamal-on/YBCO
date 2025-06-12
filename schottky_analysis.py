@@ -89,6 +89,18 @@ def plot_schottky(T):
     plt.grid(True)
     plt.show()
 
+# n parameter determination
+
+
+def n_det(abscisse, ordonnee, E):
+    n_values = []
+    for x, y in abscisse, ordonnee:
+        a = E/(k*x)
+        b = (np.exp(a) + 1)**2/np.exp(a)
+        c = (1/a**2) * b
+        n_values.append((y*1e-3*c)/r)
+    return np.mean(n_values)
+
 # Results
 
 
