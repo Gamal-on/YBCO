@@ -45,7 +45,7 @@ def linear_fit(N, E=E_exp, n=n_exp):
     Perform a linear fit on the substracted values of C/T - C_schottky vs T²
     Returns the fit parameters (beta, gamma, n) in (mJ/K⁴.mol, mJ/K².mol)"""
     C_divT_substracted = C_div_T - schottky(temperature,
-                                            E_exp, n)/temperature  # mJ/K**2.mol
+                                            E, n)/temperature  # mJ/K**2.mol
     fit = ft.linfitxy(
         squared_temperature[0:N], C_divT_substracted[0:N], err_temperature[0:N], err_C_divT[0:N])
     return fit
@@ -69,12 +69,13 @@ def debye_temperature(N, E=E_exp, n=n_exp):
     """
     Calculate the Debye temperature and gamma from the linear fit parameters
     Returns the Debye temperature in K, gamma in J/K².mol and their respectiv errors"""
-    beta, gamma = linear_fit(N, E=E_exp, n=n_exp)[
+    beta, gamma = linear_fit(N, E, n)[
         0:2]*1e-3  # conversion en J
-    u_beta, u_gamma = linear_fit(N, E=E_exp, n=n_exp)[2:4]*1e-3
+    u_beta = (linear_fit(N, E, n)[2])*1e-3
+    u_gamma = (linear_fit(N, E, n)[3])*1e-3
     pi4 = np.pi**4
     theta_D = (r*pi4*12)/(5*beta)  # en K³
-    u_theta_D = theta_D * u_beta/(3*beta)
+    u_theta_D = np.cbrt(theta_D) * u_beta/(3*beta)
     return np.cbrt(theta_D), gamma, u_theta_D, u_gamma
 
 
@@ -86,13 +87,13 @@ def final(E=E_exp, n=n_exp):
     N = int(input("Enter the number of data points to consider (N): "))
     plot_linear_fit(N, E, n)
     debye_temp = debye_temperature(N, E, n)
-    print("Debye temperature:", debye_temp[0],
-          "K", "Gamma:", debye_temp[1], "J/K².mol")
-    return debye_temp[0], debye_temp[1]
+    print("Debye temperature:", debye_temp[0], "u(TD)", debye_temp[2],
+          "K", "Gamma:", debye_temp[1], "J/K².mol", "u(gamma)", debye_temp[3])
+    return debye_temp
 
 
 def main():
-    final(n=5e-3)
+    print(final())
 
 
 if __name__ == "__main__":
