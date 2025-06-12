@@ -52,45 +52,11 @@ total_HC = np.array(colonnes["Total HC (µJ/K)"])  # row measurment microJ/mol
 err_sample_HC = np.array(
     colonnes["Samp HC Err (mJ/mole-K)"])  # error on final HC
 # no error in the data concerninf temperature
-err_temperature = np.zeros(len(err_sample_HC))
-
-# Test : qui est le soustrait ? si le samp est le soustrait samp_HC = total_HC - addenda_HC -> vérifié
-
-# test_soustrait = total_HC - addenda_HC #en microJ/K
-# test_samp_HC = 1e-3*test_soustrait*masse_molaire/masse_sample #en g/mol
-
-# print(test_samp_HC[:4], samp_HC[:4])
-
-# Plot of HC(T)
-
-
-def plot_HC_T():
-    plt.figure()
-    plt.plot(temperature, sample_HC, ".g")
-    plt.title("Heat capacity of YBCO function of temperature")
-    plt.errorbar(temperature, sample_HC, err_sample_HC, err_temperature, "g+")
-    plt.ylabel("Heat capacity (mJ/K.mol)")
-    plt.xlabel("Temperature (K)")
-    plt.show()
-
-# Plot of HC/T (T**2)
-
-
-def plot_HC_divT():
-    sampleHC_div_T = sample_HC/temperature  # mJ/K**2.mol
-    squared_temperature = temperature**2  # K**2
-    err_HC_divT = err_sample_HC/temperature
-    plt.figure()
-    plt.plot(squared_temperature, sampleHC_div_T, ".g")
-    plt.errorbar(squared_temperature, sampleHC_div_T,
-                 err_HC_divT, err_temperature, "g+")
-    plt.ylabel("C/T (mJ/K².mol)")
-    plt.xlabel("T² (K²)")
-    plt.show()
+err_temperature = 1e-2*np.ones(len(err_sample_HC))
 
 
 def main():
-    plot_HC_T()
+    pass
 
 
 if __name__ == "__main__":
