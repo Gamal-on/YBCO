@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.integrate import cumulative_trapezoid
+
 
 # Function to choose a certain interval
 
@@ -107,12 +109,9 @@ def simpson(f, a, b, n):
 
 
 def integrate(x, y, a, b):
-    tab_integrated = [0]
-    compt = 0
-    x_interval, y_interval = tab_interval(x, y, a, b)
-    for i in range(0, len(y_interval)):
-        aire = (y_interval[i+1] - y_interval[i]) * \
-            (x_interval[i+1] - x_interval[i])
-        tab_integrated.append(aire + compt)
-        compt += aire
-    return tab_integrated
+    """Integrate y with respect to x from a to b using the trapezoidal rule."""
+    mask = (x >= a) & (x <= b)
+    x_masked = x[mask]
+    y_masked = y[mask]
+    integral = cumulative_trapezoid(y_masked, x_masked, initial=0)
+    return integral
