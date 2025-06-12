@@ -92,13 +92,18 @@ def plot_schottky(T):
 # n parameter determination
 
 
-def n_det(abscisse, ordonnee, E):
+def n_det(x, y, E):
+    w = E/(k*x)
+    a = y*1e-3/r
+    b = 1/(x*w**2)
+    c = ((np.exp(w) + 1)**2)/np.exp(w)
+    return a*b*c
+
+
+def n_experimental(x, y, E):
     n_values = []
-    for x, y in abscisse, ordonnee:
-        a = E/(k*x)
-        b = (np.exp(a) + 1)**2/np.exp(a)
-        c = (1/a**2) * b
-        n_values.append((y*1e-3*c)/r)
+    for i in range(0, len(x)):
+        n_values.append(n_det(x[i], y[i], E))
     return np.mean(n_values)
 
 # Results
@@ -109,7 +114,7 @@ E_exp = k*alpha()*max_schottky(temperature, C_div_T, 0, 3)[0]
 
 
 def main():
-    print(T_max)
+    print(n_experimental(temperature[15:25], C_div_T[15:25], E_exp))
 
 
 if __name__ == "__main__":
