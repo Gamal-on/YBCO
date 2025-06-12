@@ -45,7 +45,7 @@ def plot_fit(N, beta, gamma, n):
     plt.plot(squared_temperature[0:N], fit_func(
         squared_temperature[0:N], beta, gamma, n), "g--", label="Fit")
     plt.plot(squared_temperature[0:N], C_div_T[0:N],
-             "ob", label="C/T xperimental")
+             ".b", label="C/T xperimental")
     plt.grid(True)
     plt.xlabel(r'T² (K²)')
     plt.ylabel(r'C/T (mJ/K².mol)')
