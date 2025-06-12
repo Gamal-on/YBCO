@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tools
 import fitutils as ft
-from schottky_analysis import schottky, T_max, E_exp
+from schottky_analysis import schottky, T_max, E_exp, n_exp
 
 # Data
 
@@ -24,7 +24,7 @@ r = 8.31446261815324  # J/mol.K
 # Substracted values
 
 
-def plot_substracted(N, n):
+def plot_substracted(N, E=E_exp, n=n_exp):
     """
     Plot the substracted values of C/T - C_schottky vs T²"""
     C_divT_substracted = C_div_T - schottky(temperature,
@@ -40,7 +40,7 @@ def plot_substracted(N, n):
 
 # Linear fit : (C/T - C_schottky) (T²)
 
-def linear_fit(N, n):
+def linear_fit(N, E=E_exp, n=n_exp):
     """
     Perform a linear fit on the substracted values of C/T - C_schottky vs T²
     Returns the fit parameters (beta, gamma, n) in mJ/K⁴.mol"""
@@ -51,21 +51,21 @@ def linear_fit(N, n):
     return fit
 
 
-def plot_linear_fit(N, n):
+def plot_linear_fit(N, E=E_exp, n=n_exp):
     """
     Plot the linear fit of the substracted values of C/T - C_schottky vs T²"""
     C_divT_substracted = C_div_T - schottky(temperature,
-                                            E_exp, n)/temperature  # mJ/K**2.mol
+                                            E, n)/temperature  # mJ/K**2.mol
     fit = ft.linfitxy(squared_temperature[0:N], C_divT_substracted[0:N], err_temperature[0:N], err_C_divT[0:N],
                       plot=True, linecolor="red", markercolor="orange")
     plt.grid(True)
     plt.show()
-    return
+    return fit
 
 
 # Debye temperature and gamma
 
-def debye_temperature(N, n):
+def debye_temperature(N, E=E_exp, n=n_exp):
     """
     Calculate the Debye temperature and gamma from the linear fit parameters
     Returns the Debye temperature in K and gamma in J/K².mol"""
@@ -81,9 +81,8 @@ def final():
     """
     Main function to run the analysis and plot results."""
     N = int(input("Enter the number of data points to consider (N): "))
-    n = float(input("Enter the value of defaults n : "))
-    plot_linear_fit(N, n)
-    debye_temp = debye_temperature(N, n)
+    plot_linear_fit(N, E=E_exp, n=n_exp)
+    debye_temp = debye_temperature(N, E=E_exp, n=n_exp)
     print("Debye temperature:", debye_temp[0],
           "K", "Gamma:", debye_temp[1], "J/K².mol")
     return debye_temp[0], debye_temp[1]
