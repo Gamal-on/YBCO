@@ -56,8 +56,8 @@ def fp(x):
 def alpha():
     """Calculate the alpha value as k*T_max*alpha = E"""
     a = tools.dicho_1(f, 1e-5, 0, 10)[1]
-    b = tools.resol_nr(f, fp, 100, 2, 1e-5)[0]
-    return (a+b)/2
+    # b = tools.resol_nr(f, fp, 100, 2, 1e-5)[0]
+    return a
 
 # Recherche de T_max dans nos données expérimentales, comme étant la temérature à laquelle la dérivée de la Schottky est nulle.
 # Intervalle de recherche entre 0 et 10 K²
@@ -97,7 +97,7 @@ E_exp = k*alpha()*max_schottky(temperature, C_div_T, 0, 3)[0]
 
 
 def main():
-    plot_schottky(squared_temperature)
+    print(T_max)
 
 
 if __name__ == "__main__":
