@@ -115,7 +115,7 @@ n_exp = n_experimental(temperature[15:25], C_div_T[15:25], E_exp)
 
 
 def main():
-    print(n_experimental(temperature[15:25], C_div_T[15:25], E_exp))
+    pass
 
 
 if __name__ == "__main__":
