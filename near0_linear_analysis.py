@@ -68,11 +68,14 @@ def plot_linear_fit(N, E=E_exp, n=n_exp):
 def debye_temperature(N, E=E_exp, n=n_exp):
     """
     Calculate the Debye temperature and gamma from the linear fit parameters
-    Returns the Debye temperature in K and gamma in J/K².mol"""
-    beta, gamma = linear_fit(N, n)[0:2]*1e-3  # conversion en J/K⁴.mol
+    Returns the Debye temperature in K, gamma in J/K².mol and their respectiv errors"""
+    beta, gamma = linear_fit(N, E=E_exp, n=n_exp)[
+        0:2]*1e-3  # conversion en J/K⁴.mol
+    u_beta, u_gamma = linear_fit(N, E=E_exp, n=n_exp)[2:4]*1e-3
     pi4 = np.pi**4
     theta_D = (r*pi4*12)/(5*beta)  # en K³
-    return np.cbrt(theta_D), gamma
+    u_theta_D = theta_D * u_beta/(3*beta)
+    return np.cbrt(theta_D), gamma, u_theta_D, u_gamma
 
 
 # Main function to run the analysis and plot results
