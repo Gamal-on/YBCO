@@ -14,6 +14,7 @@ from data import err_temperature
 squared_temperature = temperature**2  # K**2
 C_div_T = sample_HC/temperature  # mJ/K**2.mol
 err_C_divT = err_sample_HC/temperature
+err_squared_temperature = 2*temperature*err_temperature
 
 # Constantes et tableaux
 
@@ -23,56 +24,51 @@ r = 8.31446261815324  # J/mol.K
 
 # Substracted values
 
+def interval(a, b,  E=E_exp, n=n_exp):
+    """Give the wanted values in squared temperature and C/T, a, b : lower and higher bounds of temperature (K)"""
+    temperature_bounded, C_div_T_bounded = tools.tab_interval(
+        temperature, C_div_T, a, b)
+    temperature_bounded, squared_temperature_bounded = tools.tab_interval(
+        temperature, squared_temperature, a, b)
+    temperature_bounded, err_squared_temperature_bounded = tools.tab_interval(
+        temperature, err_squared_temperature, a, b)
+    temperature_bounded, err_C_div_T_bounded = tools.tab_interval(
+        temperature, err_C_divT, a, b)
+    return temperature_bounded, squared_temperature_bounded, C_div_T_bounded, err_squared_temperature_bounded, err_C_div_T_bounded
 
-def plot_substracted(N, E=E_exp, n=n_exp):
-    """
-    Plot the substracted values of C/T - C_schottky vs T²"""
-    C_divT_substracted = C_div_T - schottky(temperature,
-                                            E_exp, n)/temperature  # mJ/K**2.mol
-    plt.figure()
-    plt.plot(squared_temperature[0:N], C_divT_substracted[0:N], 'g.',
-             label="C/T - C_schottky")
-    plt.xlabel("T² (K²)")
-    plt.ylabel("C/T - C_schottky (mJ/K².mol)")
-    plt.title("C/T - C_schottky vs T²")
-    plt.show()
 
+def plot_substracted(a, b,  E=E_exp, n=n_exp):
+    """    Plot the substracted values of C/T - C_schottky vs T² in a given interval """
+    temperature_bounded, squared_temperature_bounded, C_div_T_bounded = interval(
+        a, b, E, n)[0:3]
+    C_div_T_substracted = C_div_T_bounded - \
+        schottky(temperature_bounded, E, n)/temperature_bounded
+    return squared_temperature_bounded, C_div_T_substracted
 
 # Linear fit : (C/T - C_schottky) (T²)
 
-def linear_fit(N, E=E_exp, n=n_exp):
+
+def linear_fit(a, b, E=E_exp, n=n_exp, plot=True):
     """
     Perform a linear fit on the substracted values of C/T - C_schottky vs T²
     Returns the fit parameters (beta, gamma, n) in (mJ/K⁴.mol, mJ/K².mol)"""
-    C_divT_substracted = C_div_T - schottky(temperature,
-                                            E, n)/temperature  # mJ/K**2.mol
+    err_squared_temperature_bounded, err_C_div_T_bounded = interval(
+        a, b, E, n)[3:5]
     fit = ft.linfitxy(
-        squared_temperature[0:N], C_divT_substracted[0:N], err_temperature[0:N], err_C_divT[0:N])
-    return fit
-
-
-def plot_linear_fit(N, E=E_exp, n=n_exp):
-    """
-    Plot the linear fit of the substracted values of C/T - C_schottky vs T²"""
-    C_divT_substracted = C_div_T - schottky(temperature,
-                                            E, n)/temperature  # mJ/K**2.mol
-    fit = ft.linfitxy(squared_temperature[0:N], C_divT_substracted[0:N], err_temperature[0:N], err_C_divT[0:N],
-                      plot=True, linecolor="red", markercolor="orange")
-    plt.grid(True)
-    plt.show()
+        plot_substracted(a, b, E, n)[0], plot_substracted(a, b, E, n)[1], err_squared_temperature_bounded, err_C_div_T_bounded, plot=plot)
     return fit
 
 
 # Debye temperature and gamma
 
-def debye_temperature(N, E=E_exp, n=n_exp):
+def debye_temperature(a, b, E=E_exp, n=n_exp):
     """
     Calculate the Debye temperature and gamma from the linear fit parameters
     Returns the Debye temperature in K, gamma in J/K².mol and their respectiv errors"""
-    beta, gamma = linear_fit(N, E, n)[
+    beta, gamma = linear_fit(a, b, E, n, plot=False)[
         0:2]*1e-3  # conversion en J
-    u_beta = (linear_fit(N, E, n)[2])*1e-3
-    u_gamma = (linear_fit(N, E, n)[3])*1e-3
+    u_beta = linear_fit(a, b, E, n, plot=False)[2]*1e-3
+    u_gamma = linear_fit(a, b, E, n, plot=False)*1e-3
     pi4 = np.pi**4
     theta_D = (r*pi4*12)/(5*beta)  # en K³
     u_theta_D = np.cbrt(theta_D) * u_beta/(3*beta)
@@ -81,19 +77,18 @@ def debye_temperature(N, E=E_exp, n=n_exp):
 
 # Main function to run the analysis and plot results
 
-def final(E=E_exp, n=n_exp):
+def final(a, b, E=E_exp, n=n_exp, plot=True):
     """
     Main function to run the analysis and plot results."""
-    N = int(input("Enter the number of data points to consider (N): "))
-    plot_linear_fit(N, E, n)
-    debye_temp = debye_temperature(N, E, n)
+    linear_fit(a, b, E, n, plot=plot)
+    debye_temp = debye_temperature(a, b, E, n)
     print("Debye temperature:", debye_temp[0], "u(TD)", debye_temp[2],
           "K", "Gamma:", debye_temp[1], "J/K².mol", "u(gamma)", debye_temp[3])
     return debye_temp
 
 
 def main():
-    print(final())
+    final(10, 15)
 
 
 if __name__ == "__main__":
