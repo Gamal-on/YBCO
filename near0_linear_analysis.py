@@ -61,14 +61,12 @@ def linear_fit(a, b, E=E_exp, n=n_exp, plot=True):
 
 # Debye temperature and gamma
 
-def debye_temperature(a, b, E=E_exp, n=n_exp):
+def debye_temperature(a, b, E=E_exp, n=n_exp, plot=True):
     """
     Calculate the Debye temperature and gamma from the linear fit parameters
     Returns the Debye temperature in K, gamma in J/K².mol and their respectiv errors"""
-    beta, gamma = linear_fit(a, b, E, n, plot=False)[
-        0:2]*1e-3  # conversion en J
-    u_beta = linear_fit(a, b, E, n, plot=False)[2]*1e-3
-    u_gamma = linear_fit(a, b, E, n, plot=False)*1e-3
+    beta, gamma, u_beta, u_gamma = linear_fit(
+        a, b, E, n, plot)*1e-3  # conversion en J
     pi4 = np.pi**4
     theta_D = (r*pi4*12)/(5*beta)  # en K³
     u_theta_D = np.cbrt(theta_D) * u_beta/(3*beta)
@@ -80,8 +78,7 @@ def debye_temperature(a, b, E=E_exp, n=n_exp):
 def final(a, b, E=E_exp, n=n_exp, plot=True):
     """
     Main function to run the analysis and plot results."""
-    linear_fit(a, b, E, n, plot=plot)
-    debye_temp = debye_temperature(a, b, E, n)
+    debye_temp = debye_temperature(a, b, E, n, plot)
     print("Debye temperature:", debye_temp[0], "u(TD)", debye_temp[2],
           "K", "Gamma:", debye_temp[1], "J/K².mol", "u(gamma)", debye_temp[3])
     return debye_temp
