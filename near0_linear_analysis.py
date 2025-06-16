@@ -48,20 +48,18 @@ def plot_substracted(a, b,  E=E_exp, n=n_exp):
 # Linear fit : (C/T - C_schottky) (T²)
 
 
-def linear_fit(a, b, E=E_exp, n=n_exp, plot=False):
+def linear_fit(a, b, E=E_exp, n=n_exp):
     """
     Perform a linear fit on the substracted values of C/T - C_schottky vs T²
     Returns the fit parameters (beta, gamma, n) in (mJ/K⁴.mol, mJ/K².mol)"""
     err_squared_temperature_bounded, err_C_div_T_bounded = interval(
         a, b, E, n)[3:5]
     fit = ft.linfitxy(
-        plot_substracted(a, b, E, n)[0], plot_substracted(a, b, E, n)[1], err_squared_temperature_bounded, err_C_div_T_bounded, plot=plot)
-    return fit
-
-
-def plot_linear_fit(a, b,  E=E_exp, n=n_exp):
-    linear_fit(a, b, E=E_exp, n=n_exp, plot=True)
+        plot_substracted(a, b, E, n)[0], plot_substracted(a, b, E, n)[
+            1], err_squared_temperature_bounded, err_C_div_T_bounded, plot=True,
+        markercolor="r", linecolor="orange")
     plt.show()
+    return fit
 
 
 # Debye temperature and gamma
@@ -72,27 +70,15 @@ def debye_temperature(a, b, E=E_exp, n=n_exp, N=8e24):
     Returns the Debye temperature in K, gamma in J/K².mol and their respectiv errors"""
     beta, gamma, u_beta, u_gamma = linear_fit(
         a, b, E, n)*1e-3  # conversion en J
-    print(beta)
     pi4 = np.pi**4
     theta_D = (N*k*pi4*12)/(5*beta)  # en K³
     u_theta_D = np.cbrt(theta_D) * u_beta/(3*beta)
-    return np.cbrt(theta_D), gamma, u_theta_D, u_gamma
-
-
-# Main function to run the analysis and plot results
-
-def final(a, b, E=E_exp, n=n_exp):
-    """
-    Main function to run the analysis and plot results."""
-    plot_linear_fit(a, b)
-    debye_temp = debye_temperature(a, b, E, n)
-    print("Debye temperature:", debye_temp[0], "u(TD)", debye_temp[2],
-          "K", "Gamma:", debye_temp[1], "J/K².mol", "u(gamma)", debye_temp[3])
-    return debye_temp
+    temp_debye = np.cbrt(theta_D)
+    return temp_debye, gamma, u_theta_D, u_gamma
 
 
 def main():
-    final(0, 10)
+    print(debye_temperature(0, 10, E=E_exp, n=n_exp))
 
 
 if __name__ == "__main__":
