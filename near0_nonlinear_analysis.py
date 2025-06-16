@@ -26,7 +26,7 @@ r = 8.31446261815324  # J/mol.K
 # Fit function
 
 
-def fit_func(x, beta, gamma, n, E=E_exp):
+def fit_func(x, beta, gamma, n, E):
     """Fit function for the nonlinear analysis of C/T - C_schottky vs T².
     Parameters: x = T² (K²), beta = mJ/K⁴.mol, gamma = mJ/K².mol, n = dimensionless"""
     phonon = beta * x
@@ -55,18 +55,18 @@ def interval(a, b):
 def nonlinear_fit(a, b):
     temperature_bounded, squared_temperature_bounded, C_div_T_bounded, err_squared_temperature_bounded, err_C_div_T_bounded = interval(
         a, b)
-    fit = opt.curve_fit(fit_func, squared_temperature_bounded, C_div_T_bounded, bounds=([0.1, 0, 1e-3], [1, 40, 5e-2]),
+    fit = opt.curve_fit(fit_func, squared_temperature_bounded, C_div_T_bounded, bounds=([0.1, 0, 1e-3, 1e-23], [1, 40, 1e-2, 1e-22]),
                         sigma=err_C_div_T_bounded, absolute_sigma=True)
     return fit[0]
 
 
 def plot_fit(a, b):
-    beta, gamma, n = nonlinear_fit(a, b)
+    beta, gamma, n, E = nonlinear_fit(a, b)
     temperature_bounded, squared_temperature_bounded, C_div_T_bounded, err_squared_temperature_bounded, err_C_div_T_bounded = interval(
         a, b)
     plt.figure()
     plt.plot(squared_temperature_bounded, fit_func(
-        squared_temperature_bounded, beta, gamma, n), "-y", label="fit")
+        squared_temperature_bounded, beta, gamma, n, E), "-y", label="fit")
     plt.plot(squared_temperature_bounded, C_div_T_bounded,
              ".g", label="C/T xperimental")
     plt.grid(True)
@@ -78,7 +78,7 @@ def plot_fit(a, b):
 # Debye temperature
 
 
-def debye_temperature(a, b, N=8e24):
+def debye_temperature(a, b, N=78e23):
     """
     Calculate the Debye temperature from the fit parameters
     Returns the Debye temperature in K and gamma in J/K².mol"""

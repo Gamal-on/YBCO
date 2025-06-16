@@ -64,7 +64,7 @@ def linear_fit(a, b, E=E_exp, n=n_exp):
 
 # Debye temperature and gamma
 
-def debye_temperature(a, b, E=E_exp, n=n_exp, N=8e24):
+def debye_temperature(a, b, E=E_exp, n=n_exp, N=78e23):
     """
     Calculate the Debye temperature and gamma from the linear fit parameters
     Returns the Debye temperature in K, gamma in J/K².mol and their respectiv errors"""
