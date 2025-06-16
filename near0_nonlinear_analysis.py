@@ -35,7 +35,7 @@ def fit_func(x, beta, gamma, n):
 
 
 def nonlinear_fit(N):
-    fit = opt.curve_fit(fit_func, squared_temperature[0:N], C_div_T[0:N],
+    fit = opt.curve_fit(fit_func, squared_temperature[0:N], C_div_T[0:N], bounds=([0.1, 0, 1e-3], [1, 40, 1e-2]),
                         sigma=err_C_divT[0:N], absolute_sigma=True)
     return fit[0]
 
