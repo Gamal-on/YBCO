@@ -2,7 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.optimize as opt
 import fitutils as ft
-from schottky_analysis import schottky, T_max, E_exp
+import tools
+from schottky_analysis import schottky, T_max, E_exp, n_exp
 
 # Data
 
@@ -11,9 +12,11 @@ from data import sample_HC
 from data import err_sample_HC
 from data import err_temperature
 
+
 squared_temperature = temperature**2  # K**2
 C_div_T = sample_HC/temperature  # mJ/K**2.mol
 err_C_divT = err_sample_HC/temperature
+err_squared_temperature = 2*temperature*err_temperature
 
 # Constantes et tableaux
 
@@ -23,60 +26,72 @@ r = 8.31446261815324  # J/mol.K
 # Fit function
 
 
-def fit_func(x, beta, gamma, n):
+def fit_func(x, beta, gamma, n, E=E_exp):
     """Fit function for the nonlinear analysis of C/T - C_schottky vs T².
     Parameters: x = T² (K²), beta = mJ/K⁴.mol, gamma = mJ/K².mol, n = dimensionless"""
     phonon = beta * x
-    y = E_exp/(k*np.sqrt(x))
+    y = E/(k*np.sqrt(x))
     schottky = (y**2) * np.exp(y)/((np.exp(y) + 1)**2)
     return phonon + gamma + n*r*1e3*schottky/np.sqrt(x)
+
+# Intervals
+
+
+def interval(a, b):
+    """Give the wanted values in squared temperature and C/T, a, b : lower and higher bounds of temperature (K)"""
+    temperature_bounded, C_div_T_bounded = tools.tab_interval(
+        temperature, C_div_T, a, b)
+    temperature_bounded, squared_temperature_bounded = tools.tab_interval(
+        temperature, squared_temperature, a, b)
+    temperature_bounded, err_squared_temperature_bounded = tools.tab_interval(
+        temperature, err_squared_temperature, a, b)
+    temperature_bounded, err_C_div_T_bounded = tools.tab_interval(
+        temperature, err_C_divT, a, b)
+    return temperature_bounded, squared_temperature_bounded, C_div_T_bounded, err_squared_temperature_bounded, err_C_div_T_bounded
 
 # Non linear fit
 
 
-def nonlinear_fit(N):
-    fit = opt.curve_fit(fit_func, squared_temperature[0:N], C_div_T[0:N], bounds=([0.1, 0, 1e-3], [1, 40, 1e-2]),
-                        sigma=err_C_divT[0:N], absolute_sigma=True)
+def nonlinear_fit(a, b):
+    temperature_bounded, squared_temperature_bounded, C_div_T_bounded, err_squared_temperature_bounded, err_C_div_T_bounded = interval(
+        a, b)
+    fit = opt.curve_fit(fit_func, squared_temperature_bounded, C_div_T_bounded, bounds=([0.1, 0, 1e-3], [1, 40, 5e-2]),
+                        sigma=err_C_div_T_bounded, absolute_sigma=True)
     return fit[0]
 
 
-def plot_fit(N, beta, gamma, n):
+def plot_fit(a, b):
+    beta, gamma, n = nonlinear_fit(a, b)
+    temperature_bounded, squared_temperature_bounded, C_div_T_bounded, err_squared_temperature_bounded, err_C_div_T_bounded = interval(
+        a, b)
     plt.figure()
-    plt.plot(squared_temperature[0:N], fit_func(
-        squared_temperature[0:N], beta, gamma, n), "g--", label="Fit")
-    plt.plot(squared_temperature[0:N], C_div_T[0:N],
-             ".b", label="C/T xperimental")
+    plt.plot(squared_temperature_bounded, fit_func(
+        squared_temperature_bounded, beta, gamma, n), "-y", label="fit")
+    plt.plot(squared_temperature_bounded, C_div_T_bounded,
+             ".g", label="C/T xperimental")
     plt.grid(True)
-    plt.xlabel(r'T² (K²)')
-    plt.ylabel(r'C/T (mJ/K².mol)')
+    plt.xlabel('T² (K²)')
+    plt.ylabel('C/T (mJ/K².mol)')
     plt.legend()
     plt.show()
 
 # Debye temperature
 
 
-def debye_temperature(N):
+def debye_temperature(a, b, N=8e24):
     """
     Calculate the Debye temperature from the fit parameters
     Returns the Debye temperature in K and gamma in J/K².mol"""
-    beta = nonlinear_fit(N)[0]*1e-3  # conversion en J/K⁴.mol
+    beta = nonlinear_fit(a, b)[0]*1e-3  # conversion en J/K⁴.mol
     pi4 = np.pi**4
-    theta_D = (r*pi4*12)/(5*beta)  # en K³
+    theta_D = (N*k*pi4*12)/(5*beta)  # en K³
     return np.cbrt(theta_D)
 
 
-# Main function to run the analysis and plot the fit
-
-def final():
-    N = int(input("Enter the number of data points to fit (N): "))
-    beta, gamma, n = nonlinear_fit(N)  # en mJ
-    plot_fit(N, beta, gamma, n)
-    print("Debye temperature:", debye_temperature(N),
-          "K", "Gamma : ", gamma, "mJ/K².mol", "n : ", n),
-
-
 def main():
-    final()
+    plot_fit(0, 10)
+    print(nonlinear_fit(0, 10))
+    print(debye_temperature(0, 10))
 
 
 if __name__ == "__main__":
