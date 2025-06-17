@@ -28,7 +28,7 @@ def tab_interval(x, y, min, max):
     x_interval = np.array(tab)
     return x_interval, y_interval
 
-# Find maximum
+# Find extremum
 
 
 def maximum(tab):
@@ -39,6 +39,16 @@ def maximum(tab):
             max = tab[i]
             idx_max = i
     return max, idx_max
+
+
+def minimum(tab):
+    idx_min = 0
+    min = tab[0]
+    for i in range(0, len(tab)):
+        if tab[i] > min:
+            min = tab[i]
+            idx_min = i
+    return min, idx_min
 
 # Plot
 
