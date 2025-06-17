@@ -21,10 +21,15 @@ err_squared_temperature = 2*temperature*err_temperature
 k = 1.380649e-23
 r = 8.31446261815324  # J/mol.K
 
+# Paramètres déterminés par curve fit
+
+n_curve_fit = 9.997e-3
+E_curve_fit = 1.0966e-22  # J
 
 # Substracted values
 
-def interval(a, b,  E=E_exp, n=n_exp):
+
+def interval(a, b):
     """Give the wanted values in squared temperature and C/T, a, b : lower and higher bounds of temperature (K)"""
     temperature_bounded, C_div_T_bounded = tools.tab_interval(
         temperature, C_div_T, a, b)
@@ -40,7 +45,7 @@ def interval(a, b,  E=E_exp, n=n_exp):
 def plot_substracted(a, b,  E=E_exp, n=n_exp):
     """    Plot the substracted values of C/T - C_schottky vs T² in a given interval """
     temperature_bounded, squared_temperature_bounded, C_div_T_bounded = interval(
-        a, b, E, n)[0:3]
+        a, b)[0:3]
     C_div_T_substracted = C_div_T_bounded - \
         schottky(temperature_bounded, E, n)/temperature_bounded
     return squared_temperature_bounded, C_div_T_substracted
@@ -53,7 +58,7 @@ def linear_fit(a, b, E=E_exp, n=n_exp):
     Perform a linear fit on the substracted values of C/T - C_schottky vs T²
     Returns the fit parameters (beta, gamma, n) in (mJ/K⁴.mol, mJ/K².mol)"""
     err_squared_temperature_bounded, err_C_div_T_bounded = interval(
-        a, b, E, n)[3:5]
+        a, b)[3:5]
     fit = ft.linfitxy(
         plot_substracted(a, b, E, n)[0], plot_substracted(a, b, E, n)[
             1], err_squared_temperature_bounded, err_C_div_T_bounded, plot=True,
@@ -78,7 +83,8 @@ def debye_temperature(a, b, E=E_exp, n=n_exp, N=78e23):
 
 
 def main():
-    print(debye_temperature(0, 10, E=E_exp, n=n_exp))
+    print(linear_fit(0, 10, E=E_curve_fit, n=n_curve_fit))
+    print(debye_temperature(0, 10, E=E_curve_fit, n=n_curve_fit))
 
 
 if __name__ == "__main__":
