@@ -45,7 +45,7 @@ def minimum(tab):
     idx_min = 0
     min = tab[0]
     for i in range(0, len(tab)):
-        if tab[i] > min:
+        if tab[i] < min:
             min = tab[i]
             idx_min = i
     return min, idx_min
