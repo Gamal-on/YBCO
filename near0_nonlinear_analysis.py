@@ -89,7 +89,6 @@ def debye_temperature(a, b, N=78e23):
 
 
 def main():
-    plot_fit(0, 10)
     print(nonlinear_fit(0, 10))
     print(debye_temperature(0, 10))
 
