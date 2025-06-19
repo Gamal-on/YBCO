@@ -88,9 +88,11 @@ def debye_temperature(a, b, N=78e23):
     return np.cbrt(theta_D)
 
 
+beta, gamma, n, E = nonlinear_fit(0, 10)
+
+
 def main():
     print(nonlinear_fit(0, 10))
-    print(debye_temperature(0, 10))
 
 
 if __name__ == "__main__":
