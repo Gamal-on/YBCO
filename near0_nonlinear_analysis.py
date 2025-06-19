@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import scipy.optimize as opt
 import fitutils as ft
 import tools
-from schottky_analysis import schottky, T_max, E_exp, n_exp
 
 # Data
 

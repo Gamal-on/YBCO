@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import tools
+import near0_nonlinear_analysis
 
 # Data
 
@@ -12,16 +13,33 @@ from data import err_temperature
 squared_temperature = temperature**2  # K**2
 C_div_T = sample_HC/temperature  # mJ/K**2.mol
 err_C_divT = err_sample_HC/temperature
+err_squared_temperature = 2*temperature*err_temperature
 
 # Constantes et tableaux
 
 k = 1.380649e-23
 r = 8.31446261815324  # J/mol.K
 
+
+beta, gamma, n, E = near0_nonlinear_analysis.nonlinear_fit(0, 10)
+
+
 # Functions
 
+def interval(a, b):
+    """Give the wanted values in squared temperature and C/T, a, b : lower and higher bounds of temperature (K)"""
+    temperature_bounded, C_div_T_bounded = tools.tab_interval(
+        temperature, C_div_T, a, b)
+    temperature_bounded, squared_temperature_bounded = tools.tab_interval(
+        temperature, squared_temperature, a, b)
+    temperature_bounded, err_squared_temperature_bounded = tools.tab_interval(
+        temperature, err_squared_temperature, a, b)
+    temperature_bounded, err_C_div_T_bounded = tools.tab_interval(
+        temperature, err_C_divT, a, b)
+    return temperature_bounded, squared_temperature_bounded, C_div_T_bounded, err_squared_temperature_bounded, err_C_div_T_bounded
 
-def schottky(T, E, n=1e-2):
+
+def schottky(T, E=E, n=n):
     """Calculate the Schottky anomaly in mJ/K.mol"""
     """T: temperature in Kelvin, E: energy in Joules, n: number of particles, k: Boltzmann constant"""
     x = (E)/(k*T)
@@ -29,7 +47,7 @@ def schottky(T, E, n=1e-2):
     return n*r*1e3*cs
 
 
-def dev_schottky(T, E, n=1):
+def dev_schottky(T, E=E, n=n):
     """Calculate the derivative of the Schottky anomaly"""
     """T: temperature in Kelvin, E: energy in Joules, n: number of particles"""
     a = E / k
@@ -55,7 +73,7 @@ def fp(x):
 
 def alpha():
     """Calculate the alpha value as k*T_max*alpha = E"""
-    #a = tools.dicho_1(f, 1e-5, 0, 10)[1]
+    a = tools.dicho_1(f, 1e-5, 0, 10)[1]
     b = tools.resol_nr(f, fp, 1e5, 2, 1e-5)[0]
     return b
 
@@ -77,12 +95,11 @@ def max_schottky(x, y, min, max):
 # n pris aléatoirement entre 1e-3 et 1e-2
 
 
-def plot_schottky(T):
-    n = float(input("Enter the number of defaults : "))
-    N = int(input("Enter the number of values to plot : "))
-    E_exp = k*alpha()*max_schottky(temperature, C_div_T, 0, 3)[0]
+def plot_schottky(a, b, E=E, n=n):
+    temperature_bounded, squared_temperature_bounded = interval(a, b)[0:2]
     plt.figure()
-    plt.plot(T[0:N], schottky(temperature, E_exp, n)[0:N], "g--")
+    plt.plot(squared_temperature_bounded, schottky(
+        temperature_bounded, E, n)/temperature_bounded, "g--")
     plt.ylabel("C/T (mJ/K².mol)")
     plt.xlabel("T (K) (or T²)")
     plt.title("Schottky anomaly, plot with experimental parameters")
