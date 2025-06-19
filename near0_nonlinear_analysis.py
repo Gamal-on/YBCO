@@ -55,7 +55,7 @@ def interval(a, b):
 def nonlinear_fit(a, b):
     temperature_bounded, squared_temperature_bounded, C_div_T_bounded, err_squared_temperature_bounded, err_C_div_T_bounded = interval(
         a, b)
-    fit = opt.curve_fit(fit_func, squared_temperature_bounded, C_div_T_bounded, bounds=([0.1, 0, 1e-3, 9e-23], [1, 40, 1e-2, 1.2e-22]),
+    fit = opt.curve_fit(fit_func, squared_temperature_bounded, C_div_T_bounded, bounds=([0.1, 0, 1e-3, 9e-23], [1, 10, 1e-2, 1.2e-22]),
                         sigma=err_C_div_T_bounded, absolute_sigma=True)
     return fit[0]
 
