@@ -17,16 +17,13 @@ def schottky_substraction(E, n, x, y):
 # Linear fit with Monte Carlo
 
 
-def linear_fit(a, b, E, n, x_carre, y, err_x=constants.err_squared_temperature, err_y=constants.err_sample_HC):
-    """
-    Perform a linear fit on the substracted values of C/T - C_schottky vs T²
-    Returns the fit parameters (beta, gamma, n) in (mJ/K⁴.mol, mJ/K².mol) 
-    a, b : bounds, x = T² , y = C/T, err_x = u(T²), err_y = u(HC)"""
-    y = schottky_substraction(E, n)
-    x_interval, y_interval = tools.tab_interval(x, y, a, b)
-    err_x_interval, err_y_interval = err_x[0:len(
-        x_interval)], err_y[0:len(y_interval)]
-    fit = ft.linfitxy(x_interval, y_interval, err_x_interval, err_y_interval)
+def linear_fit(a, b, x_carre, y, err_x=constants.err_squared_temperature, err_y=constants.err_sample_HC):
+    """Perform a linear fit using Monte Carlo method, between a and b (bounds)
+    Return the fitted values"""
+    x_interval, y_interval = tools.tab_interval(x_carre, y, a, b)
+    fit = ft.linfitxy(x_interval, y_interval, err_x, err_y,
+                      plot=True, markercolor="g", linecolor="c")
+    plt.show()
     return fit
 
 
@@ -44,25 +41,19 @@ def debye_temperature(a, b, E, n, N=78e23):
     temp_debye = np.cbrt(theta_D)
     return temp_debye, gamma, u_theta_D, u_gamma
 
-# Plotting results
 
+# Main function
 
-def plot_results(a, b, E, n, x=constants.squared_temperature,
-                 err_x=constants.err_squared_temperature, err_y=constants.err_sample_HC):
-    fit = linear_fit(a, b, E, n, x=constants.squared_temperature,
-                     err_x=constants.err_squared_temperature, err_y=constants.err_sample_HC)
-    a, b = fit[0:2]
-    x_data, y_data = tools.tab_interval(
-        constants.squared_temperature, constants.C_div_T, a, b)
-    plt.figure()
-    plt.plot()
-    plt.plot()
-    plt.grid(True)
-    plt.show()
+def final(a, b, E, n, x, x_carre, y):
+    """Warning : bounds are squared bounds"""
+    y_substracted = schottky_substraction(E, n, x, y)
+    fit = linear_fit(a, b, x_carre, y_substracted)
+    return fit
 
 
 def main():
-    print(linear_fit(0, 10, constants.E_curve_fit, constants.n_curve_fit))
+    final(0, 100, constants.E_curve_fit, constants.n_curve_fit,
+          constants.temperature, constants.squared_temperature, constants.C_div_T)
 
 
 if __name__ == "__main__":
