@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import tools
-import schottky_analysis
 import constants as cnt
 import scipy.optimize as opt
 
@@ -19,7 +18,7 @@ def fit_func(x, beta, gamma, n, E):
 # Non linear fit
 
 
-def nonlinear_fit(a, b, x_carre, y, err_y, bounds=([0.1, 0, 1e-3, 9e-23], [1, 10, 1e-2, 1.2e-22])):
+def nonlinear_fit(a, b, x_carre, y, err_y, bounds=([0.1, 0, 5e-3, 9.3e-23], [1, 5, 1.1e-2, 1.2e-22])):
     """Non linear fit usinf curve fit from scipy library : 
     a, b = sclars (bounds), 
     x_carre = array
@@ -28,11 +27,11 @@ def nonlinear_fit(a, b, x_carre, y, err_y, bounds=([0.1, 0, 1e-3, 9e-23], [1, 10
     bounds = bounds (2-tuple of arrays-like)"""
     x_carre_interval, y_interval = tools.tab_interval(x_carre, y, a, b)
     fit = opt.curve_fit(fit_func, x_carre_interval, y_interval, bounds=bounds,
-                        sigma=err_y, absolute_sigma=True)
+                        absolute_sigma=True)
     return fit[0]
 
 
-def plot_fit(a, b, x_carre, y, err_y, bounds=([0.1, 0, 1e-3, 9e-23], [1, 10, 1e-2, 1.2e-22])):
+def plot_fit(a, b, x_carre, y, err_y, bounds=([0.1, 0, 5e-3, 9.3e-23], [1, 5, 1.1e-2, 1.2e-22])):
     """Plotting data and non linear fit usinf curve fit from scipy library : 
     a, b = sclars (bounds), 
     x_carre = array
@@ -64,7 +63,7 @@ def debye_temperature(a, b, N=78e23):
 
 
 def main():
-    plot_fit(0, 400, cnt.squared_temperature, cnt.C_div_T, cnt.err_C_divT)
+    plot_fit(0, 100, cnt.squared_temperature, cnt.C_div_T, cnt.err_C_divT, bounds=([0.1, 0, 5e-3, 9.8e-23], [1, 5, 1.1e-2, 1.2e-22]))
 
 
 if __name__ == "__main__":
