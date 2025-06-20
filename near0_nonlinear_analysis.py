@@ -12,9 +12,9 @@ def fit_func(x, beta, gamma, n, E):
     """Fit function for the nonlinear analysis of C/T - C_schottky vs T².
     Parameters: x = T² (K²), beta = mJ/K⁴.mol, gamma = mJ/K².mol, n = dimensionless"""
     phonon = beta * x
-    y = E/(k*np.sqrt(x))
+    y = E/(cnt.k*np.sqrt(x))
     schottky = (y**2) * np.exp(y)/((np.exp(y) + 1)**2)
-    return phonon + gamma + n*r*1e3*schottky/np.sqrt(x)
+    return phonon + gamma + n*cnt.r*1e3*schottky/np.sqrt(x)
 
 # Non linear fit
 
