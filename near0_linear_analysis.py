@@ -21,7 +21,7 @@ def linear_fit(a, b, x_carre, y, err_x=constants.err_squared_temperature, err_y=
     """Perform a linear fit using Monte Carlo method, between a and b (bounds)
     Return the fitted values"""
     x_interval, y_interval = tools.tab_interval(x_carre, y, a, b)
-    fit = ft.linfitxy(x_interval, y_interval, err_x, err_y,
+    fit = ft.linfitxy(x_interval, y_interval, err_x[0:len(x_interval)], err_y[0:len(y_interval)],
                       plot=True, markercolor="g", linecolor="c")
     plt.show()
     return fit
@@ -52,7 +52,7 @@ def final(a, b, E, n, x, x_carre, y):
 
 
 def main():
-    final(0, 100, constants.E_curve_fit, constants.n_curve_fit,
+    final(100, 300, constants.E_curve_fit, constants.n_curve_fit,
           constants.temperature, constants.squared_temperature, constants.C_div_T)
 
 
