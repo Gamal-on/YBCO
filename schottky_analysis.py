@@ -126,13 +126,15 @@ def n_experimental(x, y, E):
 # Results
 
 
-T_max = max_schottky(temperature, C_div_T, 0, 3)[0]
-E_exp = k*alpha()*max_schottky(temperature, C_div_T, 0, 3)[0]
-n_exp = n_experimental(temperature[15:25], C_div_T[15:25], E_exp)
+def results_shottky():
+    T_max = max_schottky(temperature, C_div_T, 0, 3)[0]
+    E_exp = k*alpha()*max_schottky(temperature, C_div_T, 0, 3)[0]
+    n_exp = n_experimental(temperature[15:25], C_div_T[15:25], E_exp)
+    return T_max, E_exp, n_exp
 
 
 def main():
-    print(E_exp)
+    pass
 
 
 if __name__ == "__main__":
