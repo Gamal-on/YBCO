@@ -7,7 +7,7 @@ import scipy.optimize as opt
 # Fit function
 
 
-def fit_func_quadra(x, beta, gamma, n, E, alpha):
+def model_quadra(x, beta, gamma, n, E, alpha):
     """Fit function for the nonlinear analysis of C/T - C_schottky vs T².
     Parameters: x = T² (K²), beta = mJ/K⁴.mol, gamma = mJ/K².mol, n = dimensionless"""
     phonon = beta * x
@@ -27,7 +27,7 @@ def nonlinear_fit_quadra(a, b, x_carre, y, bounds):
     err_y = array
     bounds = bounds (2-tuple of arrays-like)"""
     x_carre_interval, y_interval = tools.tab_interval(x_carre, y, a, b)
-    fit = opt.curve_fit(fit_func_quadra, x_carre_interval, y_interval, bounds=bounds,
+    fit = opt.curve_fit(model_quadra, x_carre_interval, y_interval, bounds=bounds,
                         absolute_sigma=True)
     return fit[0]
 
@@ -45,7 +45,7 @@ def plot_fit_quadra(a, b, x_carre, y, bounds):
     print("Beta, Gamma, n, E, alpha : ", beta, gamma, n, E, alpha)
     plt.figure()
     plt.plot(x_carre_interval, y_interval, "g.", label="Experimental")
-    plt.plot(x_carre_interval, fit_func_quadra(
+    plt.plot(x_carre_interval, model_quadra(
         x_carre_interval, beta, gamma, n, E, alpha), "c-", label="Fit")
     plt.grid(True)
     plt.legend()
@@ -53,7 +53,7 @@ def plot_fit_quadra(a, b, x_carre, y, bounds):
 
 
 def main():
-    plot_fit_quadra(0, 100, cnt.squared_temperature,
+    plot_fit_quadra(0, 400, cnt.squared_temperature,
                     cnt.C_div_T, ([0.1, 0, 5e-3, 9.3e-23, -1], [1, 5, 1.1e-2, 1.2e-22, 1]))
 
 

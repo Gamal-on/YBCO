@@ -5,7 +5,6 @@ from scipy.integrate import cumulative_trapezoid
 
 # Function to choose a certain interval
 
-
 def tab_interval(x, y, min, max):
     """Choose bounds in x, return the corresponding values in x and y"""
     idx_min = 0
