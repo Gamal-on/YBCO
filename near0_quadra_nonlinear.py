@@ -54,7 +54,7 @@ def plot_fit_quadra(a, b, x_carre, y, bounds):
 
 def main():
     plot_fit_quadra(0, 400, cnt.squared_temperature,
-                    cnt.C_div_T, ([0.1, 0, 5e-3, 9.3e-23, -1], [1, 5, 1.1e-2, 1.2e-22, 1]))
+                    cnt.C_div_T, ([0.1, 0, 5e-3, 9.3e-23, -1], [1, 0.1, 1.1e-2, 1.2e-22, 1]))
 
 
 if __name__ == "__main__":
