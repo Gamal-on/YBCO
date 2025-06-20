@@ -59,7 +59,7 @@ def debye_temperature(a, b, N=78e23):
     Returns the Debye temperature in K and gamma in J/K².mol"""
     beta = nonlinear_fit(a, b)[0]*1e-3  # conversion en J/K⁴.mol
     pi4 = np.pi**4
-    theta_D = (N*k*pi4*12)/(5*beta)  # en K³
+    theta_D = (N*cnt.k*pi4*12)/(5*beta)  # en K³
     return np.cbrt(theta_D)
 
 
