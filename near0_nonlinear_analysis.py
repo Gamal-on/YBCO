@@ -1,26 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import scipy.optimize as opt
-import fitutils as ft
 import tools
-
-# Data
-
-from data import temperature
-from data import sample_HC
-from data import err_sample_HC
-from data import err_temperature
-
-
-squared_temperature = temperature**2  # K**2
-C_div_T = sample_HC/temperature  # mJ/K**2.mol
-err_C_divT = err_sample_HC/temperature
-err_squared_temperature = 2*temperature*err_temperature
-
-# Constantes et tableaux
-
-k = 1.380649e-23
-r = 8.31446261815324  # J/mol.K
+import schottky_analysis
+import constants as cnt
+import scipy.optimize as opt
 
 # Fit function
 
@@ -33,44 +16,37 @@ def fit_func(x, beta, gamma, n, E):
     schottky = (y**2) * np.exp(y)/((np.exp(y) + 1)**2)
     return phonon + gamma + n*r*1e3*schottky/np.sqrt(x)
 
-# Intervals
-
-
-def interval(a, b):
-    """Give the wanted values in squared temperature and C/T, a, b : lower and higher bounds of temperature (K)"""
-    temperature_bounded, C_div_T_bounded = tools.tab_interval(
-        temperature, C_div_T, a, b)
-    temperature_bounded, squared_temperature_bounded = tools.tab_interval(
-        temperature, squared_temperature, a, b)
-    temperature_bounded, err_squared_temperature_bounded = tools.tab_interval(
-        temperature, err_squared_temperature, a, b)
-    temperature_bounded, err_C_div_T_bounded = tools.tab_interval(
-        temperature, err_C_divT, a, b)
-    return temperature_bounded, squared_temperature_bounded, C_div_T_bounded, err_squared_temperature_bounded, err_C_div_T_bounded
-
 # Non linear fit
 
 
-def nonlinear_fit(a, b):
-    temperature_bounded, squared_temperature_bounded, C_div_T_bounded, err_squared_temperature_bounded, err_C_div_T_bounded = interval(
-        a, b)
-    fit = opt.curve_fit(fit_func, squared_temperature_bounded, C_div_T_bounded, bounds=([0.1, 0, 1e-3, 9e-23], [1, 10, 1e-2, 1.2e-22]),
-                        sigma=err_C_div_T_bounded, absolute_sigma=True)
+def nonlinear_fit(a, b, x_carre, y, err_y, bounds=([0.1, 0, 1e-3, 9e-23], [1, 10, 1e-2, 1.2e-22])):
+    """Non linear fit usinf curve fit from scipy library : 
+    a, b = sclars (bounds), 
+    x_carre = array
+    y = array
+    err_y = array
+    bounds = bounds (2-tuple of arrays-like)"""
+    x_carre_interval, y_interval = tools.tab_interval(x_carre, y, a, b)
+    fit = opt.curve_fit(fit_func, x_carre_interval, y_interval, bounds=bounds,
+                        sigma=err_y, absolute_sigma=True)
     return fit[0]
 
 
-def plot_fit(a, b):
-    beta, gamma, n, E = nonlinear_fit(a, b)
-    temperature_bounded, squared_temperature_bounded, C_div_T_bounded, err_squared_temperature_bounded, err_C_div_T_bounded = interval(
-        a, b)
+def plot_fit(a, b, x_carre, y, err_y, bounds=([0.1, 0, 1e-3, 9e-23], [1, 10, 1e-2, 1.2e-22])):
+    """Plotting data and non linear fit usinf curve fit from scipy library : 
+    a, b = sclars (bounds), 
+    x_carre = array
+    y = array
+    err_y = array
+    bounds = bounds (2-tuple of arrays-like)"""
+    x_carre_interval, y_interval = tools.tab_interval(x_carre, y, a, b)
+    beta, gamma, n, E = nonlinear_fit(a, b, x_carre, y, err_y, bounds=bounds)
+    print("Beta, Gamma, n, E : ", beta, gamma, n, E)
     plt.figure()
-    plt.plot(squared_temperature_bounded, fit_func(
-        squared_temperature_bounded, beta, gamma, n, E), "-y", label="fit")
-    plt.plot(squared_temperature_bounded, C_div_T_bounded,
-             ".g", label="C/T xperimental")
+    plt.plot(x_carre_interval, y_interval, "g.", label="Experimental")
+    plt.plot(x_carre_interval, fit_func(
+        x_carre_interval, beta, gamma, n, E), "c-", label="Fit")
     plt.grid(True)
-    plt.xlabel('T² (K²)')
-    plt.ylabel('C/T (mJ/K².mol)')
     plt.legend()
     plt.show()
 
@@ -88,7 +64,7 @@ def debye_temperature(a, b, N=78e23):
 
 
 def main():
-    print(nonlinear_fit(0, 10))
+    plot_fit(0, 400, cnt.squared_temperature, cnt.C_div_T, cnt.err_C_divT)
 
 
 if __name__ == "__main__":
