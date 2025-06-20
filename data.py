@@ -49,8 +49,7 @@ sample_HC = np.array(colonnes["Samp HC (mJ/mole-K)"])
 # addenda heat capacity microJ/K
 addenda_HC = np.array(colonnes["Addenda HC (µJ/K)"])
 total_HC = np.array(colonnes["Total HC (µJ/K)"])  # row measurment microJ/mol
-err_sample_HC = np.array(
-    colonnes["Samp HC Err (mJ/mole-K)"])  # error on final HC
+err_sample_HC =  0.02*sample_HC   #np.array(colonnes["Samp HC Err (mJ/mole-K)"])  # error on final HC
 # no error in the data concerninf temperature
 err_temperature = 1e-2*np.ones(len(err_sample_HC))
 
