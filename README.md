@@ -1,4 +1,4 @@
-AYBCO Calorimetric Analysis – 04/06
+# YBCO Calorimetric Analysis – 04/06
 
 Files:
 - results_YBCO.ipynb: Main Jupyter notebook containing the analysis steps, visualizations, and summarized results.
