@@ -29,7 +29,7 @@ def nonlinear_fit_quadra(a, b, x_carre, y, bounds):
     x_carre_interval, y_interval = tools.tab_interval(x_carre, y, a, b)
     fit = opt.curve_fit(model_quadra, x_carre_interval, y_interval, bounds=bounds,
                         absolute_sigma=True)
-    return fit[0]
+    return fit
 
 
 def plot_fit_quadra(a, b, x_carre, y, bounds):
@@ -41,7 +41,7 @@ def plot_fit_quadra(a, b, x_carre, y, bounds):
     bounds = bounds (2-tuple of arrays-like)"""
     x_carre_interval, y_interval = tools.tab_interval(x_carre, y, a, b)
     beta, gamma, n, E, alpha = nonlinear_fit_quadra(
-        a, b, x_carre, y, bounds)
+        a, b, x_carre, y, bounds)[0]
     print("Beta, Gamma, n, E, alpha : ", beta, gamma, n, E, alpha)
     plt.figure()
     plt.plot(x_carre_interval, y_interval, "g.", label="Experimental")
