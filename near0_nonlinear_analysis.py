@@ -63,7 +63,8 @@ def debye_temperature(a, b, N=78e23):
 
 
 def main():
-    plot_fit(0, 100, cnt.squared_temperature, cnt.C_div_T, cnt.err_C_divT, bounds=([0.1, 0, 5e-3, 9.8e-23], [1, 5, 1.1e-2, 1.2e-22]))
+    plot_fit(0, 100, cnt.squared_temperature, cnt.C_div_T, cnt.err_C_divT,
+             bounds=([0.1, 0, 5e-3, 9.8e-23], [1, 5, 1.1e-2, 1.2e-22]))
 
 
 if __name__ == "__main__":
