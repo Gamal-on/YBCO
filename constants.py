@@ -19,6 +19,7 @@ err_squared_temperature = 2*temperature*err_temperature
 
 k = 1.380649e-23
 r = 8.31446261815324
+N = 78e23
 
 # Fitted parameters
 

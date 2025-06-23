@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import tools
-import constants
+import constants as cnt
 
 
 def fonction(x):
@@ -40,3 +40,15 @@ def debye_integral(temperature):
     y = fonction_debye(temperature, debye_temperature)
     integral = progressive_integration(debye_temperature, y)
     return debye_temperature, integral
+
+def tab_beta(temperature) :
+    debye_temprature, integral = debye_integral(temperature)
+    tab = []
+    for x,y in debye_temprature, integral:
+        tab.append(9*cnt.N*cnt.k* y/(x**3))
+    return x, tab
+
+def test_beta(temperature) :
+    x, tab_beta = tab_beta(temperature)
+    for val in tab_beta :
+        
