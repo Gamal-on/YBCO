@@ -47,23 +47,23 @@ def tab_beta(temperature):
     """Return the beta value, function of the temperature, for several possible Debye temperatures"""
     debye_temprature, integral = debye_integral(temperature)
     tab = []
-    for x, y in debye_temprature, integral:
-        tab.append(9*cnt.N*cnt.k * y/(x**3))
-    return x, tab
+    for i in range(0, len(debye_temprature)):
+        tab.append(9*cnt.N*cnt.k * integral[i]/(debye_temprature[i]**3))
+    return debye_temprature, tab
 
 
 def test(temperature):
-    x, tab_beta = tab_beta(temperature)
+    x, tab = tab_beta(temperature)
     ini = 1e3
-    for i in range(0, len(tab_beta)):
-        eps = cnt.beta_quadratic - tab_beta[i]
+    for i in range(0, len(tab)):
+        eps = cnt.beta_quadratic - tab[i]
         if eps < ini:
             ini = eps
     return x[i]
 
 
 def main():
-    test(20)
+    print(debye_integral(20))
 
 
 if __name__ == "__main__":
