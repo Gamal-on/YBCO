@@ -28,6 +28,13 @@ E_curve_fit = 1.0966e-22  # J
 
 # Deduced form Schottky analysis
 T_exp = 2.9461005
-E_exp_8 = 1.0681622692127778e-22 # with NR and 8.67
-E_exp_10 = 1.1549944696942883e-22 # with mean and 10.148
+E_exp_8 = 1.0681622692127778e-22  # with NR and 8.67
+E_exp_10 = 1.1549944696942883e-22  # with mean and 10.148
 n_exp = 0.0016374152345313721
+
+# Determined by quadratic fit
+beta_quadratic = 0.46318268614826286
+gamma_quadratic = 0.06319440532206101
+n_quadratic = 0.012979953809295845
+E_quadratic = 1.1584047800714808e-22
+alpha_quadratic = 0.00046894875156273756
