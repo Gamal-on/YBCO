@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tools
 import constants as cnt
+from scipy.integrate import quad
 
 
 def fonction(x):
@@ -41,14 +42,25 @@ def debye_integral(temperature):
     integral = progressive_integration(debye_temperature, y)
     return debye_temperature, integral
 
-def tab_beta(temperature) :
+
+def tab_beta(temperature):
     debye_temprature, integral = debye_integral(temperature)
     tab = []
-    for x,y in debye_temprature, integral:
-        tab.append(9*cnt.N*cnt.k* y/(x**3))
+    for x, y in debye_temprature, integral:
+        tab.append(9*cnt.N*cnt.k * y/(x**3))
     return x, tab
 
-def test_beta(temperature) :
-    x, tab_beta = tab_beta(temperature)
-    for val in tab_beta :
-        
+
+def integral(y):
+    if y <= 0:
+        return 0
+
+    def integrand(x): return (x**4 * np.exp(x)) / (np.exp(x) - 1)**2
+    result, _ = quad(integrand, 0, y)
+    return result
+
+
+def F(theta_D, T_i, beta, factor):
+    factor = (12/5)*np.pi**4
+    y = theta_D / T_i
+    return beta * theta_D**3 - factor * I(y)
