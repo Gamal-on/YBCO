@@ -1,12 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import tools
-import near0_nonlinear_analysis
+import near0_nonlinear_acoustic
 import constants as cnt
 
 
 
-beta, gamma, n, E = cnt.beta_quadratic, cnt.gamma_quadratic, cnt.n_exp, cnt.E_exp_8
+beta, gamma, n, E = cnt.beta_optic, cnt.gamma_quadratic, cnt.n_exp, cnt.E_exp_8
 
 
 def schottky(T, E, n):

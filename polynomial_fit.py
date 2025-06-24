@@ -79,18 +79,18 @@ def fit_with_uncertainties(model, x_data, y_data, y_err, initial_params, n_simul
     }
 
 
-def polynomial_model(x_carre, alpha, beta, gamma):
-    a = alpha*(x_carre**2)
+def polynomial_model(x_carre, beta, alpha, gamma):
+    a = alpha*(x_carre**0.5)
     b = beta*x_carre
     c = gamma
     return a + b + c
 
 
-# results = fit_with_uncertainties(polynomial_model, cnt.squared_temperature,
-    # cnt.C_div_T -
-    # sch.schottky(cnt.squared_temperature,
-    #            cnt.E_curve_fit, cnt.n_curve_fit)/cnt.temper,
-    # cnt.err_C_divT, [0, 0.45, 1e-4])
+results = fit_with_uncertainties(polynomial_model, cnt.squared_temperature,
+                                 cnt.C_div_T -
+                                 sch.schottky(cnt.squared_temperature,
+                                              cnt.E_curve_fit, cnt.n_curve_fit)/cnt.temperature,
+                                 cnt.err_C_divT, [0, 0.45, 1e-4])
 
 
 def poly_fit(a, b, x, x_carre, y, err_y, E, n, deg=2):
@@ -110,7 +110,7 @@ def poly_fit(a, b, x, x_carre, y, err_y, E, n, deg=2):
 
 
 def main():
-    pass
+    print(results["best_params"])
 
 
 if __name__ == "__main__":

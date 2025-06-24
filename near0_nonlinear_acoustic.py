@@ -4,10 +4,10 @@ import tools
 import constants as cnt
 import scipy.optimize as opt
 
-# Fit function
+# Fit function acoustic
 
 
-def fit_func(x, beta, gamma, n, E):
+def model_acoustic(x, beta, gamma, n, E):
     """Fit function for the nonlinear analysis of C/T - C_schottky vs T².
     Parameters: x = T² (K²), beta = mJ/K⁴.mol, gamma = mJ/K².mol, n = dimensionless"""
     phonon = beta * x
@@ -26,12 +26,12 @@ def nonlinear_fit(a, b, x_carre, y, err_y, bounds=([0.1, 0, 5e-3, 9.3e-23], [1, 
     err_y = array
     bounds = bounds (2-tuple of arrays-like)"""
     x_carre_interval, y_interval = tools.tab_interval(x_carre, y, a, b)
-    fit = opt.curve_fit(fit_func, x_carre_interval, y_interval, bounds=bounds,
+    fit = opt.curve_fit(model_acoustic, x_carre_interval, y_interval, bounds=bounds,
                         absolute_sigma=True)
     return fit[0]
 
 
-def plot_fit(a, b, x_carre, y, err_y, bounds=([0.1, 0, 5e-3, 9.3e-23], [1, 5, 1.1e-2, 1.2e-22])):
+def plot_fit_acoustic(a, b, x_carre, y, err_y, bounds=([0.1, 0, 5e-3, 9.3e-23], [1, 5, 1.1e-2, 1.2e-22])):
     """Plotting data and non linear fit usinf curve fit from scipy library : 
     a, b = sclars (bounds), 
     x_carre = array
@@ -39,32 +39,21 @@ def plot_fit(a, b, x_carre, y, err_y, bounds=([0.1, 0, 5e-3, 9.3e-23], [1, 5, 1.
     err_y = array
     bounds = bounds (2-tuple of arrays-like)"""
     x_carre_interval, y_interval = tools.tab_interval(x_carre, y, a, b)
-    beta, gamma, n, E = nonlinear_fit(a, b, x_carre, y, err_y, bounds=bounds)
+    beta, gamma, n, E = nonlinear_fit(
+        a, b, x_carre, y, err_y, bounds=bounds)
     print("Beta, Gamma, n, E : ", beta, gamma, n, E)
     plt.figure()
     plt.plot(x_carre_interval, y_interval, "g.", label="Experimental")
-    plt.plot(x_carre_interval, fit_func(
+    plt.plot(x_carre_interval, model_acoustic(
         x_carre_interval, beta, gamma, n, E), "c-", label="Fit")
     plt.grid(True)
     plt.legend()
     plt.show()
 
-# Debye temperature
-
-
-def debye_temperature(a, b, N=78e23):
-    """
-    Calculate the Debye temperature from the fit parameters
-    Returns the Debye temperature in K and gamma in J/K².mol"""
-    beta = nonlinear_fit(a, b)[0]*1e-3  # conversion en J/K⁴.mol
-    pi4 = np.pi**4
-    theta_D = (N*cnt.k*pi4*12)/(5*beta)  # en K³
-    return np.cbrt(theta_D)
-
 
 def main():
-    plot_fit(0, 100, cnt.squared_temperature, cnt.C_div_T, cnt.err_C_divT,
-             bounds=([0.1, 0, 5e-3, 9.8e-23], [1, 5, 1.1e-2, 1.2e-22]))
+    plot_fit_acoustic(0, 400, cnt.squared_temperature, cnt.C_div_T, cnt.err_C_divT,
+                      bounds=([0.1, 0, 5e-3, 9.8e-23], [1, 5, 1.1e-2, 1.2e-22]))
 
 
 if __name__ == "__main__":

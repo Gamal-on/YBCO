@@ -33,12 +33,12 @@ E_exp_8 = 1.0681622692127778e-22  # with NR and 8.67
 E_exp_10 = 1.1549944696942883e-22  # with mean and 10.148
 n_exp = 0.0016374152345313721
 
-# Determined by quadratic fit
-beta_quadratic = 0.46318268614826286
-gamma_quadratic = 0.06319440532206101
-n_quadratic = 0.012979953809295845
-E_quadratic = 1.1584047800714808e-22
-alpha_quadratic = 0.00046894875156273756
+# Determined by optic fit
+beta_optic = 0.44633863261624984
+gamma_optic = 1.9612364149478514
+n_optic = 0.010999999999999998
+E_optic = 1.1183498428073282e-22
+alpha_optic = 0.0005023827216230027
 
 # Debye temperature
 
