@@ -5,6 +5,8 @@ import constants as cnt
 from scipy.integrate import quad
 
 
+# Step 1 : defining the function to integrate
+
 def fonction(x):
     num = np.exp(x)*(x**4)
     denom = (np.exp(x) - 1)**2
@@ -15,6 +17,9 @@ def fonction_debye(temperature, temp_debye):
     """Return the Debye function to be integrated"""
     alpha = 1/temperature
     return alpha*fonction(alpha*temp_debye)
+
+
+# Step 2 : integrate the function between bounds, regarding the temperature
 
 
 def integrate_between_bounds(x, y, a, b):
@@ -42,28 +47,18 @@ def debye_integral(temperature):
     integral = progressive_integration(debye_temperature, y)
     return debye_temperature, integral
 
+# Step 3 : Calculate the theorical beta and test it
+
 
 def tab_beta(temperature):
     """Return the beta value, function of the temperature, for several possible Debye temperatures"""
-    debye_temprature, integral = debye_integral(temperature)
-    tab = []
-    for i in range(0, len(debye_temprature)):
-        tab.append(9*cnt.N*cnt.k * integral[i]/(debye_temprature[i]**3))
-    return debye_temprature, tab
-
-
-def test(temperature):
-    x, tab = tab_beta(temperature)
-    ini = 1e3
-    for i in range(0, len(tab)):
-        eps = cnt.beta_quadratic - tab[i]
-        if eps < ini:
-            ini = eps
-    return x[i]
+    debye_temperature, integral = debye_integral(temperature)
+    tab_beta = integral/(debye_temperature**3)
+    return debye_temperature, 9*cnt.N*cnt.k*tab_beta
 
 
 def main():
-    print(debye_integral(20))
+    print(tab_beta(10)[1])
 
 
 if __name__ == "__main__":

@@ -19,7 +19,7 @@ err_squared_temperature = 2*temperature*err_temperature
 
 k = 1.380649e-23
 r = 8.31446261815324
-N = 78e23
+N = 9e24
 
 # Fitted parameters
 
@@ -39,3 +39,23 @@ gamma_quadratic = 0.06319440532206101
 n_quadratic = 0.012979953809295845
 E_quadratic = 1.1584047800714808e-22
 alpha_quadratic = 0.00046894875156273756
+
+# Debye temperature
+
+
+def debye_temperature(beta):
+    """
+    Calculate the Debye temperature and gamma from the linear fit parameters
+    Returns the Debye temperature in K, gamma in J/K².mol and their respectiv errors"""
+    pi4 = np.pi**4
+    factor = N*12*k*pi4/5
+    temp_debye = np.cbrt(factor/(beta*1e-3))
+    return temp_debye
+
+
+def main():
+    print(debye_temperature(0.46))
+
+
+if __name__ == "__main__":
+    main()
