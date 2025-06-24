@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tools
 import near0_nonlinear_analysis
+import constants as cnt
 
 # Data
 
@@ -20,11 +21,10 @@ err_squared_temperature = 2*temperature*err_temperature
 k = 1.380649e-23
 r = 8.31446261815324  # J/mol.K
 
-
-beta, gamma, n, E = near0_nonlinear_analysis.nonlinear_fit(0, 10)
-
+beta, gamma, n, E = cnt.beta_quadratic, cnt.gamma_quadratic, cnt.n_exp, cnt.E_exp_8
 
 # Functions
+
 
 def interval(a, b):
     """Give the wanted values in squared temperature and C/T, a, b : lower and higher bounds of temperature (K)"""

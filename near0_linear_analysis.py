@@ -45,7 +45,7 @@ def debye_temperature(a, b, E, n, N=78e23):
 # Main function
 
 def final(a, b, E, n, x, x_carre, y):
-    """Warning : bounds are squared bounds"""
+    """Substract the Schottky contribution and return the fitted paramters of C/T(T²). Warning : bounds are squared bounds"""
     y_substracted = schottky_substraction(E, n, x, y)
     fit = linear_fit(a, b, x_carre, y_substracted)
     return fit
