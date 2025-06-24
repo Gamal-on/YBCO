@@ -1,90 +1,101 @@
 import numpy as np
 import constants as cnt
 from scipy.integrate import quad
-from scipy.optimize import curve_fit
+import scipy.optimize as sc
 import matplotlib.pyplot as plt
 import tools
+import schottky_analysis as sch
 
-# 1. Définition de l'intégrande de Debye
-
-
-def integrande_debye(t):
-    """Fonction intégrande pour l'intégrale de Debye."""
-    # Gestion numérique de la singularité en t=0
-    if abs(t) < 1e-12:
-        return 0.0  # Limite t->0 : t^4/(e^t-1)^2 * e^t → 0
-    return t**4 * np.exp(t) / (np.exp(t) - 1)**2
-
-# 2. Modèle de capacité thermique de Debye
+# Fonction à intégrer :
 
 
-def modele_debye(T, C_scale, Td):
+def integrand(x):
+    """Fonction à intégrer"""
+    exp_x = np.exp(x)
+    denom = (exp_x - 1)**2
+    return (x**4 * exp_x) / denom
+
+# Calcul de l'intégrale I(y)
+
+
+def debye_integral(y):
+    """Calcule l'intégrale de 0 à y de la fonction integrand(x)."""
+    result, _ = quad(integrand, 0, y)
+    return result
+
+
+# Vecteurisation de la fonction I pour traiter les tableaux
+I_vec = np.vectorize(debye_integral)
+
+# Modèle complet
+
+
+def model_integral_schottky(x, gamma, theta, E, n):
     """
-    Modèle de Debye pour la capacité thermique.
-
-    Args:
-        T : Température (ou array de températures)
-        C_scale : Facteur d'échelle (9*N*k)
-        Td : Température de Debye (paramètre d'ajustement)
-
-    Returns:
-        C_v : Capacité thermique prédite
+    Modèle complet:
+    Paramètres:
+    x      : variable indépendante, T²
+    Cs     : contribution de schottky
+    gamma  : paramètre constant
+    theta  : paramètre de l'intégrale
     """
-    def integree(x):
-        """Calcule l'intégrale pour une valeur x = Td/T"""
-        result, _ = quad(integrande_debye, 0, x)
-        return result
-
-    # Vectorisation pour gérer les arrays
-    if isinstance(T, (int, float)):
-        T = np.array([T])
-
-    C_v = np.zeros_like(T)
-    for i, temp in enumerate(T):
-        x = Td / temp
-        integrale = integree(x)
-        C_v[i] = C_scale * (temp/Td)**3 * integrale
-
-    return C_v
+    y = theta / np.sqrt(x)  # Calcul de y
+    I_vals = I_vec(y)       # Calcul de l'intégrale
+    term = 9*cnt.N*cnt.k * (x / (theta**3)) * I_vals
+    return sch.schottky(np.sqrt(x), E, n) + gamma + term
 
 
-# 3. Chargement des données expérimentales
-T_data, C_data = tools.tab_interval(cnt.squared_temperature, cnt.C_div_T, 0, 400) # Températures en Kelvin
+def model_integral_schottky_substracted(x, gamma, theta):
+    """
+    Modèle linéaire :
 
-# 4. Ajustement du modèle aux données
-# Estimation initiale des paramètres [C_scale, Td]
-p0 = [1e-3, 300]
+    Paramètres:
+    x      : variable indépendante, T²
+    gamma  : paramètre constant
+    theta  : paramètre de l'intégrale
+    """
+    y = theta / np.sqrt(x)  # Calcul de y
+    I_vals = I_vec(y)       # Calcul de l'intégrale
+    term = 9*cnt.N*cnt.k * (x / (theta**3)) * I_vals
+    return gamma + term
+    return
 
-# Bornes pour éviter des valeurs non physiques
-# [C_scale_min, Td_min], [C_scale_max, Td_max]
-bornes = ([1e-6, 50], [1e-1, 2000])
+# Fonction wrapper pour curve fit
 
-params_opt, covariance = curve_fit(
-    modele_debye,
-    T_data,
-    C_data,
-    p0=p0,
-    bounds=bornes,
-    maxfev=5000  # Augmenter le nombre d'évaluations si nécessaire
-)
 
-# 5. Extraction des paramètres optimisés
-C_scale_opt, Td_opt = params_opt
-print(f"Paramètres optimisés:", params_opt)
-print(f"Facteur d'échelle (C_scale) = {C_scale_opt:.4e}")
-print(f"Température de Debye (Td) = {Td_opt:.1f} K")
-print(f"Rapport signal/bruit: {np.diag(covariance)}")
+def model_integral_schottky_wrap(x, gamma, theta, E, n):
+    return model_integral_schottky(x, gamma, theta, E, n)
 
-# 6. Visualisation des résultats
-T_fit = np.linspace(min(T_data), max(T_data), 100)
-C_fit = modele_debye(T_fit, C_scale_opt, Td_opt)
 
-plt.figure(figsize=(10, 6))
-plt.scatter(T_data, C_data, label='Données expérimentales', s=50)
-plt.plot(T_fit, C_fit, 'r-', label=f'Modèle Debye: Td={Td_opt:.1f}K')
-plt.xlabel('Température (K)', fontsize=12)
-plt.ylabel('Capacité thermique $C_v$', fontsize=12)
-plt.title('Ajustement au modèle de Debye', fontsize=14)
-plt.legend()
-plt.grid(True, alpha=0.3)
-plt.show()
+def model_integral_schottky_substracted_wrap(x, gamma, theta):
+    return model_integral_schottky_substracted(x, gamma, theta)
+
+# Fit avec curve fit
+
+
+def fit_integral_schottky(a, b, x, y):
+    """Warning : squared temperature is used"""
+    x_bounded, y_bounded = tools.tab_interval(x, y, a, b)
+    fit = sc.curve_fit(model_integral_schottky_wrap, x_bounded, y_bounded)
+    return fit[0]
+
+
+def fit_integral_schottky_substracted(a, b, x, x_carre, y):
+    """Warning : squared temperature is used"""
+    mask = (x >= a) & (x <= b)
+    x_carre_bounded, y_bounded = tools.tab_interval(x_carre, y, a**2, b**2)
+    x_bounded = x[mask]
+    y_schottky_subs_bounded = y_bounded - \
+        sch.schottky(x_bounded, cnt.E_optic, n=cnt.n_optic)
+    fit = sc.curve_fit(model_integral_schottky_substracted_wrap,
+                       x_carre_bounded, y_schottky_subs_bounded, bounds=([0, 300], [10, 600]))
+    return fit[0]
+
+
+def main():
+    print(fit_integral_schottky_substracted(
+        0, 20, cnt.temperature, cnt.squared_temperature, cnt.C_div_T))
+
+
+if __name__ == "__main__":
+    main()
