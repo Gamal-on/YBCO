@@ -5,8 +5,7 @@ import near0_nonlinear_acoustic
 import constants as cnt
 
 
-
-beta, gamma, n, E = cnt.beta_optic, cnt.gamma_quadratic, cnt.n_exp, cnt.E_exp_8
+beta, gamma, n, E = cnt.beta_optic, cnt.gamma_optic, cnt.n_optic, cnt.E_optic
 
 
 def schottky(T, E, n):
@@ -62,6 +61,7 @@ def max_schottky(x, y, min, max):
     return x_maxi, maxi
 
 # n parameter determination
+
 
 def n_det(x, y, E):
     w = E/(cnt.k*x)

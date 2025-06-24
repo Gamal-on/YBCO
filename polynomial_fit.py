@@ -79,8 +79,8 @@ def fit_with_uncertainties(model, x_data, y_data, y_err, initial_params, n_simul
     }
 
 
-def polynomial_model(x_carre, beta, alpha, gamma):
-    a = alpha*(x_carre**0.5)
+def polynomial_model(x_carre, alpha, beta, gamma):
+    a = alpha*(x_carre**2)
     b = beta*x_carre
     c = gamma
     return a + b + c
@@ -110,7 +110,7 @@ def poly_fit(a, b, x, x_carre, y, err_y, E, n, deg=2):
 
 
 def main():
-    print(results["best_params"])
+    print(poly_fit(0, 20, cnt.temperature, cnt.squared_temperature, cnt.C_div_T, cnt.err_C_divT, cnt.E_optic, cnt.n_optic))
 
 
 if __name__ == "__main__":
