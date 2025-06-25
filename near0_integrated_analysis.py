@@ -7,40 +7,28 @@ from functools import lru_cache
 from scipy.integrate import quad
 from scipy.optimize import curve_fit
 
-# Définition de l'intégrande
-
 
 def integrand(t):
     # t scalar
-    return t**4 * np.exp(t) / (np.expm1(t)**2)
+    return t**4 * np.exp(t) / ((np.exp(t)-1)**2)
 
 # Fonction pour I(y) avec mise en cache
 
 
 @lru_cache(maxsize=1000)
 def I_of_y_scalar(y):
-    # y est un scalaire Python float >= 0
-    val, err = quad(lambda t: integrand(t), 0, y, epsabs=1e-8, epsrel=1e-8)
+    val, err = quad(integrand, 0, y)
     return val
 
 
-def I_of_y(y_array):
-    """
-    Calcule I(y) pour un tableau ou scalaire y_array.
-    Utilise la fonction scalaires mise en cache pour accélérer.
-    """
-    y_arr = np.atleast_1d(y_array)
-    result = np.empty_like(y_arr, dtype=float)
-    for i, yi in enumerate(y_arr):
-        if yi < 0:
-            raise ValueError(f"y must be >=0, got {yi}")
-        result[i] = I_of_y_scalar(float(yi))
-    if np.isscalar(y_array):
-        return result.item()
+def I(y_array):
+    result = []
+    for yi in y_array:
+        result.append(I_of_y_scalar(float(yi)))
     return result
 
 
-def model(x, theta, gamma):
+def model_integrated_schottky_substracted(x, theta, gamma):
     """
     Modèle f(x) = gamma + x * I(theta / x)
     x: array-like positif
@@ -48,11 +36,23 @@ def model(x, theta, gamma):
     """
     x_arr = np.asarray(x, dtype=float)
     y_arr = theta / np.sqrt(x_arr)
-    I_vals = I_of_y(y_arr)
-    return gamma + x_arr * I_vals * 9*cnt.k*cnt.N/(theta**3)
+    I_vals = I(y_arr)
+    return gamma + x_arr * I_vals * 9e3*cnt.k*cnt.N/(theta**3)
 
 
-def fit_data(xdata, ydata, p0=None, bounds=None):
+def model_integrated_schottky(x, theta, gamma, E, n):
+    """
+    Modèle f(x) = gamma + x * I(theta / x) + Cs(sqrt(x))
+    x: array-like positif
+    theta, gamma: scalaires
+    """
+    x_arr = np.asarray(x, dtype=float)
+    y_arr = theta / np.sqrt(x_arr)
+    I_vals = I(y_arr)
+    return gamma + x_arr * I_vals * 9e3*cnt.k*cnt.N/(theta**3) + sch.schottky(np.sqrt(x), E, n)/np.sqrt(x)
+
+
+def fit_data(xdata, ydata, model, p0=None, bounds=None):
     """
     Ajuste les données (xdata, ydata) au modèle, retourne (popt, pcov).
     - xdata, ydata: array-like de même longueur.
@@ -71,22 +71,43 @@ def fit_data(xdata, ydata, p0=None, bounds=None):
         theta0 = 1.0
         gamma0 = np.mean(y_arr)
         p0 = [theta0, gamma0]
-    # Appel curve fit
     popt, pcov = curve_fit(model, x_arr, y_arr, p0=p0,
                            bounds=bounds or (-np.inf, np.inf))
     return popt, pcov
 
 
+def fit_integrand_schottky_subtracted(a, b, x_carre, x, y, E, n, p0, bounds):
+    """Return the results of optimization of C/T(T²), linear form (Schottky contribution substracted)
+    a, b : bounds (not squared)
+    x_carre : T²
+    x : T
+    y : C/T
+    E, n : Schottky parameters"""
+    x_carre_interval, y_interval = tools.tab_interval(x_carre, y, a**2, b**2)
+    x_interval, x_interval = tools.tab_interval(x, x, a, b)
+    y_data = y_interval - sch.schottky(x_interval, E, n)/x_interval
+    fit = fit_data(x_carre_interval, y_data,
+                   model_integrated_schottky_substracted, p0=p0, bounds=bounds)
+    return fit
+
+
+def fit_integrand_schottky(a, b, x_carre, y, p0, bounds):
+    """Return the results of optimization of C/T(T²), Schottky contribution
+    a, b : bounds (not squared)
+    x_carre : T²
+    x : T
+    y : C/T"""
+    x_carre_interval, y_interval = tools.tab_interval(x_carre, y, a**2, b**2)
+    fit = fit_data(x_carre_interval, y_interval,
+                   model_integrated_schottky, p0=p0, bounds=bounds)
+    return fit
+
+
 def main():
-    squared_temperature_bounded, C_div_T_bounded = tools.tab_interval(
-        cnt.squared_temperature, cnt.C_div_T, 0, 400)
-    temperature_bounded, err_sample_bounded = tools.tab_interval(
-        cnt.temperature, cnt.err_sample_HC, 0, 20)
-    ydata = C_div_T_bounded - \
-        sch.schottky(temperature_bounded, cnt.E_curve_fit,
-                     cnt.n_curve_fit)/temperature_bounded
-    print(fit_data(squared_temperature_bounded,
-          ydata, p0=[300,-1] , bounds=([300, -1], [600, 10]))[0])
+    print(fit_integrand_schottky_subtracted(0, 20, cnt.squared_temperature, cnt.temperature,
+          cnt.C_div_T, cnt.E_curve_fit, cnt.n_curve_fit, p0=[300, 0], bounds=([300, 0], [500, 10])))
+    print(fit_integrand_schottky(0, 20, cnt.squared_temperature, cnt.C_div_T, p0=[
+          300, 0, 9.7e-23, 1e-23], bounds=([300, 0, 9.7e-23, 1e-3], [500, 10, 1.2e-22, 5e-2])))
 
 
 if __name__ == "__main__":

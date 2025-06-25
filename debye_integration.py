@@ -8,7 +8,7 @@ from scipy.integrate import quad
 # Step 1 : defining the function to integrate
 
 def fonction(x):
-    num = np.exp(x)*(x**4)
+    num = np.exp(x)*(x**4) 
     denom = (np.exp(x) - 1)**2
     return num/denom
 
