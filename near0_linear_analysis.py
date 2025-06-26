@@ -25,7 +25,7 @@ def linear_fit(a, b, x_carre, y, err_x=constants.err_squared_temperature, err_y=
     fit = ft.linfitxy(x_interval, y_interval, err_x[0:len(x_interval)], err_y[0:len(y_interval)],
                       plot=True, markercolor="g", linecolor="c")
     plt.xlabel("Températue (en K)")
-    plt.ylable("C/T (en mJ/K²/mol)")
+    plt.ylabel("C/T (en mJ/K²/mol)")
     plt.show()
     return fit
 
@@ -40,7 +40,7 @@ def final(a, b, E, n, x, x_carre, y):
 
 
 def main():
-    final(100, 300, constants.E_curve_fit, constants.n_curve_fit,
+    final(0, 100, constants.E_curve_fit, constants.n_curve_fit,
           constants.temperature, constants.squared_temperature, constants.C_div_T)
 
 
