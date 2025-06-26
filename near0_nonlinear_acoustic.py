@@ -46,6 +46,8 @@ def plot_fit_acoustic(a, b, x_carre, y, err_y, bounds=([0.1, 0, 5e-3, 9.3e-23], 
     plt.plot(x_carre_interval, y_interval, "g.", label="Experimental")
     plt.plot(x_carre_interval, model_acoustic(
         x_carre_interval, beta, gamma, n, E), "c-", label="Fit")
+    plt.xlabel("Températue (en K)")
+    plt.ylable("C/T (en mJ/K²/mol)")
     plt.grid(True)
     plt.legend()
     plt.show()
