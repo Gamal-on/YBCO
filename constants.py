@@ -54,7 +54,7 @@ def debye_temperature(beta):
 
 
 def main():
-    print(debye_temperature(0.437))
+    print(debye_temperature(0.480))
 
 
 if __name__ == "__main__":
