@@ -21,8 +21,11 @@ def linear_fit(a, b, x_carre, y, err_x=constants.err_squared_temperature, err_y=
     """Perform a linear fit using Monte Carlo method, between a and b (bounds)
     Return the fitted values"""
     x_interval, y_interval = tools.tab_interval(x_carre, y, a, b)
+    plt.figure()
     fit = ft.linfitxy(x_interval, y_interval, err_x[0:len(x_interval)], err_y[0:len(y_interval)],
                       plot=True, markercolor="g", linecolor="c")
+    plt.xlabel("Températue (en K)")
+    plt.ylable("C/T (en mJ/K²/mol)")
     plt.show()
     return fit
 
