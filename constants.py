@@ -1,7 +1,3 @@
-from data_HPHT import err_temperature_HPHT
-from data_HPHT import err_sample_HC_HPHT
-from data_HPHT import sample_HC_HPHT
-from data_HPHT import temperature_HPHT
 import numpy as np
 import tools
 
@@ -13,6 +9,10 @@ N = 78.286e23
 
 # Data of the HPHT sample
 
+from data_HPHT import err_temperature_HPHT
+from data_HPHT import err_sample_HC_HPHT
+from data_HPHT import sample_HC_HPHT
+from data_HPHT import temperature_HPHT
 
 squared_temperature_HPHT = temperature_HPHT**2  # K**2
 hc_div_temp_HPHT = sample_HC_HPHT/temperature_HPHT  # mJ/K**2.mol
@@ -38,6 +38,18 @@ n_optic_HPHT = 0.010999999999999998
 E_optic_HPHT = 1.1183498428073282e-22
 alpha_optic_HPHT = 0.0005023827216230027
 
+
+# Data of ISIS sample
+
+from data_ISIS import err_temperature_ISIS
+from data_ISIS import err_sample_HC_ISIS
+from data_ISIS import sample_HC_ISIS
+from data_ISIS import temperature_ISIS
+
+squared_temperature_ISIS = temperature_ISIS**2  # K**2
+hc_div_temp_ISIS = sample_HC_ISIS/temperature_ISIS  # mJ/K**2.mol
+err_hc_div_temp_ISIS = err_sample_HC_ISIS/temperature_ISIS
+err_squared_temperature_ISIS = 2*temperature_ISIS*err_temperature_ISIS
 
 def main():
     pass
