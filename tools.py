@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import cumulative_trapezoid
+import constants as cnt
 
 
 # Function to choose a certain interval
@@ -133,6 +134,14 @@ def debye_temperature(beta):
     Calculate the Debye temperature and gamma from the linear fit parameters
     Returns the Debye temperature in K, gamma in J/K².mol and their respectiv errors"""
     pi4 = np.pi**4
-    factor = N*12*k*pi4/5
+    factor = cnt.N*12*cnt.k*pi4/5
     temp_debye = np.cbrt(factor/(beta*1e-3))
     return temp_debye
+
+def main():
+    print(debye_temperature(0.7664))
+
+
+if __name__ == "__main__":
+    main()
+
