@@ -49,7 +49,7 @@ def plot_fit_optic(a, b, x_carre, y, err_y, bounds):
     plt.plot(x_carre_interval, model_optic(
         x_carre_interval, beta, gamma, n, E, nu), "c-", label="Fit")
     plt.xlabel("Temperature (K)")
-    plt.ylable("C/T (mJ/K²/mol)")
+    plt.ylabel("C/T (mJ/K²/mol)")
     plt.grid(True)
     plt.legend()
     plt.show()
