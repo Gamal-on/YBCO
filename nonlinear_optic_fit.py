@@ -35,7 +35,7 @@ def optic_fit(a, b, x_carre, y, err_y, bounds):
 
 def plot_fit_optic(a, b, x_carre, y, err_y, bounds):
     """Plotting data and non linear fit usinf curve fit from scipy library : 
-    a, b = sclars (bounds), 
+    a, b = sclars (bounds in squared temperature), 
     x_carre = array
     y = array
     err_y = array
