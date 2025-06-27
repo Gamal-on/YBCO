@@ -1,7 +1,8 @@
 # YBCO Calorimetric Analysis – 04/06
 
 Files:
-- results_YBCO.ipynb: Main Jupyter notebook containing the analysis steps, visualizations, and summarized results.
+- results_YBCO_optdoped.ipynb: Main Jupyter notebook containing the analysis steps, visualizations, and summarized results for the optimally doped sample (x = 0)
+- results_YBC_overdoped.ipynb: Main Jupyter notebook containing the analysis steps, visualizations, and summarized results for the optimally doped sample
 - Python scripts: Python scripts used to perform the calculations in a modular way.
 - H20250604(P250415 HPHT 475C 6GPa 3.5h YBCO7).dat: Experimental data file used for the analyses.
 
