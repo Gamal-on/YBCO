@@ -124,3 +124,15 @@ def integrate(x, y, a, b):
     y_masked = y[mask]
     integral = cumulative_trapezoid(y_masked, x_masked, initial=0)
     return integral
+
+# Debye temperature
+
+
+def debye_temperature(beta):
+    """
+    Calculate the Debye temperature and gamma from the linear fit parameters
+    Returns the Debye temperature in K, gamma in J/K².mol and their respectiv errors"""
+    pi4 = np.pi**4
+    factor = N*12*k*pi4/5
+    temp_debye = np.cbrt(factor/(beta*1e-3))
+    return temp_debye

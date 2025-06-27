@@ -43,15 +43,15 @@ for ligne in donnees_lignes:
 
 # Arrays:
 
-temperature = np.array(colonnes["Sample Temp (Kelvin)"])
+temperature_HPHT = np.array(colonnes["Sample Temp (Kelvin)"])
 # final heat capacity (without the addenda), mJ/K.mol
-sample_HC = np.array(colonnes["Samp HC (mJ/mole-K)"])
+sample_HC_HPHT = np.array(colonnes["Samp HC (mJ/mole-K)"])
 # addenda heat capacity microJ/K
-addenda_HC = np.array(colonnes["Addenda HC (µJ/K)"])
-total_HC = np.array(colonnes["Total HC (µJ/K)"])  # row measurment microJ/mol
-err_sample_HC =  0.02*sample_HC   #np.array(colonnes["Samp HC Err (mJ/mole-K)"])  # error on final HC
+addenda_HC_HPHT = np.array(colonnes["Addenda HC (µJ/K)"])
+total_HC_HPHT = np.array(colonnes["Total HC (µJ/K)"])  # row measurment microJ/mol
+err_sample_HC_HPHT =  0.02*sample_HC_HPHT   #np.array(colonnes["Samp HC Err (mJ/mole-K)"])  # error on final HC
 # no error in the data concerninf temperature
-err_temperature = 1e-2*np.ones(len(err_sample_HC))
+err_temperature_HPHT = 1e-2*np.ones(len(err_sample_HC_HPHT))
 
 
 def main():

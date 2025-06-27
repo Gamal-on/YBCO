@@ -1,16 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import tools
-import near0_nonlinear_acoustic
 import constants as cnt
 
-
-beta, gamma, n, E = cnt.beta_optic, cnt.gamma_optic, cnt.n_optic, cnt.E_optic
+# Schottkx anomaly
 
 
 def schottky(T, E, n):
     """Calculate the Schottky anomaly in mJ/K.mol"""
-    """T: temperature in Kelvin, E: energy in Joules, n: number of particles, k: Boltzmann constant"""
+    """T: temperature in Kelvin, E: energy in Joules, n: number of particles"""
     x = (E)/(cnt.k*T)
     cs = (x**2)*(np.exp(x)/(1+np.exp(x))**2)
     return n*cnt.r*1e3*cs
@@ -76,15 +74,6 @@ def n_experimental(x, y, E):
     for i in range(0, len(x)):
         n_values.append(n_det(x[i], y[i], E))
     return np.mean(n_values)
-
-# Results
-
-
-def results_shottky():
-    T_max = max_schottky(cnt.temperature, cnt.C_div_T, 0, 3)[0]
-    E_exp = cnt.k*alpha()*max_schottky(cnt.temperature, cnt.C_div_T, 0, 3)[0]
-    n_exp = n_experimental(cnt.temperature[15:25], cnt.C_div_T[15:25], E_exp)
-    return T_max, E_exp, n_exp
 
 
 def main():

@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import tools
 import constants as cnt
 import scipy.optimize as opt
+from schottky_analysis import schottky
 
 # Fit function
 
@@ -11,17 +12,18 @@ def model_quadra(x, beta, gamma, n, E, alpha):
     """Fit function for the nonlinear analysis of C/T - C_schottky vs T².
     Parameters: x = T² (K²), beta = mJ/K⁴.mol, gamma = mJ/K².mol, n = dimensionless"""
     phonon = beta * x
-    y = E/(cnt.k*np.sqrt(x))
-    schottky = (y**2) * np.exp(y)/((np.exp(y) + 1)**2)
+    y = np.sqrt(x)
+    # schottky = (y**2) * np.exp(y)/((np.exp(y) + 1)**2)
+    cs = schottky(y, E, n)/y
     quadra = alpha*(x**2)
-    return phonon + gamma + n*cnt.r*1e3*schottky/np.sqrt(x) + quadra
+    return phonon + gamma + n*cnt.r*1e3*cs + quadra
 
 # Non linear fit
 
 
 def nonlinear_fit_quadra(a, b, x_carre, y, bounds):
-    """Non linear fit usinf curve fit from scipy library : 
-    a, b = sclars (bounds), 
+    """Non linear fit usinf curve fit from scipy library :
+    a, b = sclars (bounds),
     x_carre = array
     y = array
     err_y = array
@@ -33,8 +35,8 @@ def nonlinear_fit_quadra(a, b, x_carre, y, bounds):
 
 
 def plot_fit_quadra(a, b, x_carre, y, bounds):
-    """Plotting data and non linear fit usinf curve fit from scipy library : 
-    a, b = sclars (bounds), 
+    """Plotting data and non linear fit usinf curve fit from scipy library :
+    a, b = sclars (bounds),
     x_carre = array
     y = array
     err_y = array
@@ -53,8 +55,7 @@ def plot_fit_quadra(a, b, x_carre, y, bounds):
 
 
 def main():
-    plot_fit_quadra(0, 400, cnt.squared_temperature,
-                    cnt.C_div_T, ([0.1, 0, 5e-3, 9.3e-23, -1], [1, 0.1, 1.1e-2, 1.2e-22, 1]))
+    pass
 
 
 if __name__ == "__main__":
