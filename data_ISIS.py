@@ -43,7 +43,7 @@ for ligne in donnees_lignes:
 
 # Arrays:
 
-temperature_P24 = np.array(colonnes["Sample Temp (Kelvin)"])
+temperature_ISIS = np.array(colonnes["Sample Temp (Kelvin)"])
 # final heat capacity (without the addenda), mJ/K.mol
 sample_HC_ISIS = np.array(colonnes["Samp HC (mJ/mole-K)"])
 #errors
