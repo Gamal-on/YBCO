@@ -129,19 +129,20 @@ def integrate(x, y, a, b):
 # Debye temperature
 
 
-def debye_temperature(beta):
+def debye_temperature():
     """
     Calculate the Debye temperature and gamma from the linear fit parameters
     Returns the Debye temperature in K, gamma in J/K².mol and their respectiv errors"""
+    beta = float(input("beta : "))
     pi4 = np.pi**4
     factor = cnt.N*12*cnt.k*pi4/5
     temp_debye = np.cbrt(factor/(beta*1e-3))
     return temp_debye
 
+
 def main():
-    print(debye_temperature(0.7664))
+    print(debye_temperature())
 
 
 if __name__ == "__main__":
     main()
-
