@@ -44,12 +44,25 @@ alpha_optic_HPHT = 0.0005023827216230027
 from data_ISIS import err_temperature_ISIS
 from data_ISIS import err_sample_HC_ISIS
 from data_ISIS import sample_HC_ISIS
-from data_ISIS import temperature_ISIS
+from data_ISIS import temperature_P24
 
-squared_temperature_ISIS = temperature_ISIS**2  # K**2
-hc_div_temp_ISIS = sample_HC_ISIS/temperature_ISIS  # mJ/K**2.mol
-err_hc_div_temp_ISIS = err_sample_HC_ISIS/temperature_ISIS
-err_squared_temperature_ISIS = 2*temperature_ISIS*err_temperature_ISIS
+squared_temperature_ISIS = temperature_P24**2  # K**2
+hc_div_temp_ISIS = sample_HC_ISIS/temperature_P24  # mJ/K**2.mol
+err_hc_div_temp_ISIS = err_sample_HC_ISIS/temperature_P24
+err_squared_temperature_ISIS = 2*temperature_P24*err_temperature_ISIS
+
+# Data of P240 sample
+
+from data_P24 import temperature_P24
+from data_P24 import err_temperature_P24
+from data_P24 import sample_HC_P24
+from data_P24 import err_sample_HC_P24
+
+squared_temperature_P24 = temperature_P24**2  # K**2
+hc_div_temp_P24 = sample_HC_ISIS/temperature_P24  # mJ/K**2.mol
+err_hc_div_temp_P24 = err_sample_HC_ISIS/temperature_P24
+err_squared_temperature_P24 = 2*temperature_P24*err_temperature_ISIS
+
 
 def main():
     pass

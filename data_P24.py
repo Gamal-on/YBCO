@@ -9,11 +9,11 @@ mBa = 137.3270
 mCu = 63.5460
 mO = 15.9994
 masse_molaire = 666.22  # g.mol
-masse_sample = 8.45e-3  # g
+masse_sample = 6.81e-3  # g
 
 # File reading
 
-data_file = open("fork_ISISA_1906.txt", "r",  encoding="latin-1")
+data_file = open("fork_P240917.txt", "r",  encoding="latin-1")
 lignes = data_file.readlines()
 data_file.close()
 
@@ -45,11 +45,12 @@ for ligne in donnees_lignes:
 
 temperature_P24 = np.array(colonnes["Sample Temp (Kelvin)"])
 # final heat capacity (without the addenda), mJ/K.mol
-sample_HC_ISIS = np.array(colonnes["Samp HC (mJ/mole-K)"])
-#errors
-err_sample_HC_ISIS =  0.02*sample_HC_ISIS   #np.array(colonnes["Samp HC Err (mJ/mole-K)"])  # error on final HC
+sample_HC_P24 = np.array(colonnes["Samp HC (mJ/mole-K)"])
+
+# np.array(colonnes["Samp HC Err (mJ/mole-K)"])  # error on final HC
+err_sample_HC_P24 = 0.02*sample_HC_P24
 # no error in the data concerninf temperature
-err_temperature_ISIS = 1e-2*np.ones(len(err_sample_HC_ISIS))
+err_temperature_P24 = 1e-2*np.ones(len(err_sample_HC_P24))
 
 
 def main():
