@@ -1,19 +1,14 @@
-# YBCO Calorimetric Analysis – 04/06
+# YBCO Heat Capacity Analysis 
 
-Files:
-- results_YBCO_optdoped.ipynb: Main Jupyter notebook containing the analysis steps, visualizations, and summarized results for the optimally doped sample (x = 0)
-- results_YBC_overdoped.ipynb: Main Jupyter notebook containing the analysis steps, visualizations, and summarized results for the optimally doped sample
-- Python scripts: Python scripts used to perform the calculations in a modular way.
-- H20250604(P250415 HPHT 475C 6GPa 3.5h YBCO7).dat: Experimental data file used for the analyses.
+Objectif : 
+- Visulaliser et interpréter les données expérimentales issues des mesures de chaleur spécifique pour le composé YBCO
+- Comparaison de plusieurs modèles théoriques et de plusieurs méthodes d'ajustement
+- Étudier l'effet du dopage, en régime très surdopé
 
-This folder gathers the analyses carried out this week on the heat capacity data of an optimally doped YBCO sample.
+Fichiers : 
+- plot_data.ipynb : notebook pour visualiser les données expérimentales des trois échantillons mesurés : YBCO optimalment dopé, synthétisé à haute température et haute pression (YBCO_HPHT), et YBCO surdopé (YBCO_P24 et YBCO_ISIS)
+- results_YBCO_HPHT.ipynb : notebook contenant les ajustements linéaires pour YBCO non dopé (témoin)
+- results_YBCO_P24.ipynb : notebook contenant les ajustements linéaires pour YBCO surdopé (x $\approx 0.3$)
+- results_YBCO_ISIS.ipynb : notebook contenant les ajustements linéaires pour YBCO surdopé, pressé à froid (x $\approx 0.3$)
 
-Objectives:
-- Visualize the experimental data to identify thermal anomalies.
-- Detect a Schottky-type contribution.
-- Estimate the Debye temperature through linear and non-linear fits.
-- Extract the associated physical parameters: γ, β, T_Debye, etc.
 
-Required dependencies :
-- Python > 3.8
-- Libraries : numpy, matplotlib.pyplot, scipy.optimize, fitutils
