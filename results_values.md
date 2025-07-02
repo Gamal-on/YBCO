@@ -2,21 +2,21 @@
 
 |  Optimization and model    | Temperature range | β (en mJ/mol/K⁴) | Θ (en K) | γ (en mJ/mol/K²) | Remarques                                        |
 |--------------------------|----------------------|------------------|----------|-------------------|--------------------------------------------------|
-| Debye non linéaire       | 0 - 10 K             | 0.486            | 373      | 0.97           | E semble sous estimée                            |
-| Debye linéaire           | 6 - 12 K             | 0.479            | 375      | 4.610         |    
-| Debye linéaire           | 5 - 10 K             | 0.411            | 394      | 9.10         |                  |
-| Einstein non linéaire    | 0 - 20 K             | 0.459            | 380      | 0.566             | E et n sont proches de ceux trouvés par Debye …  |
-| Einstein polynomial      | 12 - 20 K            | 0.430            | 388      | 5.030             |                                                  |
+| Debye non linéaire ($Cs + \beta x + \gamma,  x=T²$)  | 0 - 10 K             | 0.486            | 373      | 0.97           | E semble sous estimée                            |
+| Debye linéaire  ($\beta x + \gamma,  x=T^2$) | 6 - 12 K             | 0.479            | 375      | 4.610         |    
+| Debye linéaire ($\beta x + \gamma,  x=T^2$) | 5 - 10 K             | 0.411            | 394      | 9.10         |                  |
+| Einstein non linéaire ($\beta x + \gamma + \alpha x² + Cs,  x=T^2$)  | 0 - 20 K             | 0.459            | 380      | 0.566             | E et n sont proches de ceux trouvés par Debye …  |
+| Einstein polynomial ($\beta x + \gamma + \alpha x²$) | 12 - 20 K            | 0.430            | 388      | 5.030             |                                                  |
 
 ## Overdoped YBCO, ISIS sample
 
 | Optimization, model    | Temperature range | β (en mJ/mol/K⁴) | Θ (en K) | γ (en mJ/mol/K²) | Remarques                                        |
 |--------------------------|----------------------|------------------|----------|-------------------|--------------------------------------------------|
-| Debye non linéaire       | 0 - 12 K             | 0.750            | 324      | 3.16              | E semble sous estimée                            |
-| Debye linéaire           | 5 - 12 K             | 0.773            | 327      | 6.67              | 
-| Debye linéaire           | 5 - 10 K             | 0.676            | 334      | 9.00              |                                                  |                                                 |
-| Einstein non linéaire    | 0 - 20 K             | 0.738            | 324      | 2.31              | E et n sont proches de ceux trouvés par Debye …  |
-| Einstein polynomial      | 5 - 20 K             | 0.711            | 328      | 5.73              |                                                  |
+| Debye non linéaire ($Cs + \beta x + \gamma,  x=T²$)  | 0 - 12 K             | 0.750            | 324      | 3.16              | E semble sous estimée                            |
+| Debye linéaire   ($\beta x + \gamma,  x=T^2$) | 5 - 12 K             | 0.773            | 327      | 6.67              | 
+| Debye linéaire   ($\beta x + \gamma,  x=T^2$)| 5 - 10 K             | 0.676            | 334      | 9.00              |                                                  |                                                 |
+| Einstein non linéaire ($\beta x + \gamma + \alpha x² + Cs,  x=T^2$)  | 0 - 20 K             | 0.738            | 324      | 2.31              | E et n sont proches de ceux trouvés par Debye …  |
+| Einstein polynomial ($\beta x + \gamma + \alpha x²$) | 5 - 20 K             | 0.711            | 328      | 5.73              |                                                  |
 
 ## Overdoped YBCO,P240917 sample
 
