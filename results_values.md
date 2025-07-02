@@ -2,8 +2,9 @@
 
 |  Optimization and model    | Temperature range | β (en mJ/mol/K⁴) | Θ (en K) | γ (en mJ/mol/K²) | Remarques                                        |
 |--------------------------|----------------------|------------------|----------|-------------------|--------------------------------------------------|
-| Debye non linéaire       | 0 - 10 K             | 0.486            | 373      | 1.560             | E semble sous estimée                            |
-| Debye linéaire           | 6 - 12 K             | 0.479            | 375      | 4.610             |                                                  |
+| Debye non linéaire       | 0 - 10 K             | 0.486            | 373      | 0.97           | E semble sous estimée                            |
+| Debye linéaire           | 6 - 12 K             | 0.479            | 375      | 4.610         |    
+| Debye linéaire           | 5 - 10 K             | 0.411            | 394      | 9.10         |                  |
 | Einstein non linéaire    | 0 - 20 K             | 0.459            | 380      | 0.566             | E et n sont proches de ceux trouvés par Debye …  |
 | Einstein polynomial      | 12 - 20 K            | 0.430            | 388      | 5.030             |                                                  |
 
@@ -12,7 +13,8 @@
 | Optimization, model    | Temperature range | β (en mJ/mol/K⁴) | Θ (en K) | γ (en mJ/mol/K²) | Remarques                                        |
 |--------------------------|----------------------|------------------|----------|-------------------|--------------------------------------------------|
 | Debye non linéaire       | 0 - 12 K             | 0.750            | 324      | 3.16              | E semble sous estimée                            |
-| Debye linéaire           | 5 - 12 K             | 0.773            | 327      | 6.67              |                                                  |
+| Debye linéaire           | 5 - 12 K             | 0.773            | 327      | 6.67              | 
+| Debye linéaire           | 5 - 10 K             | 0.676            | 334      | 9.00              |                                                  |                                                 |
 | Einstein non linéaire    | 0 - 20 K             | 0.738            | 324      | 2.31              | E et n sont proches de ceux trouvés par Debye …  |
 | Einstein polynomial      | 5 - 20 K             | 0.711            | 328      | 5.73              |                                                  |
 
@@ -23,6 +25,7 @@
 | Debye non linéaire       | 0 - 12 K             | 0.910            | 303      | 10.95            |                                            |
 | Debye, non linéaire      | 0 - 20 K             | 0.992            | 294      | 2.99             | Ne fonctionnait pas pour les autres échantillons |
 | Debye linéaire           | 0 -20 K              | 0.975            | 295      | 7.12             | Ne fonctionnait pas pour les autres échantillons |
-| Debye linéaire           | 0 - 12 K             | 0.890            | 305      | 13.74            |                                            |
+| Debye linéaire           | 5 - 12 K             | 0.890            | 305      | 13.74            |                                            |
+| Debye linéaire           | 5 - 10 K             | 0.813            | 314      | 17.84            |                                            |
 | Einstein non linéaire    | 0 - 20 K             | 0.910            | 302      | 9.32             |                                            |
 | Einstein polynomial      | 5 - 20 K             | 0.880            | 306      | 13.36            |                                            |

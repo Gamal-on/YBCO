@@ -21,3 +21,5 @@
 - results_YBCO_ISIS.ipynb: Notebook containing the linear fits for overdoped YBCO, cold‐pressed (x ≈ 0.3)
 
 - results_values.md : Markdown file containing all the parameters determined by fitting the data
+
+- image.ipynb : To plot the data on the same figure as previous reported ones
