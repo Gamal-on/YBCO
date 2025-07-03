@@ -8,43 +8,42 @@ def model_linear(x, beta, gamma):
     return beta*x + gamma
 
 
-def chi2(x_data, y_data, f, beta, gamma):
+def chi2(x_data, y_data, f, params):
     """Calculate the chi2
     x_data, y_data : array-like
     f : model 
     params = array-like of the parameters"""
-    r = y_data - f(x_data, beta, gamma)
+    r = y_data - f(x_data, *params)
     return np.sum(r**2)
 
 
-def chi2_one_iteration(x_data, y_data, f, bounds_beta, bounds_gamma):
-    beta = rd.uniform(bounds_beta[0], bounds_beta[1])
-    gamma = rd.uniform(bounds_gamma[0], bounds_gamma[1])
-    return chi2(x_data, y_data, f, beta, gamma), beta, gamma
+def chi2_one_iteration(x_data, y_data, f, bounds, size_params):
+    params = np.ones(size_params)
+    for i in range(0, size_params):
+        params[i] = rd.uniform(*bounds[i])
+    return chi2(x_data, y_data, f, params), params
 
 
-def minimize_chi2(x_data, y_data, f, N, bounds_beta, bounds_gamma):
+def minimize_chi2(x_data, y_data, f, N, bounds, size_params):
     i = 0
     chi2_ini = 1e6
-    beta_opt = 0
-    gamma_opt = 0
+    params_opt = np.ones(size_params)
     N = int(N)
     for i in range(0, N):
-        chi2, beta, gamma = chi2_one_iteration(
-            x_data, y_data, f, bounds_beta, bounds_gamma)
+        chi2, params = chi2_one_iteration(
+            x_data, y_data, f, bounds, size_params)
         if chi2 < chi2_ini:
             chi2_ini = chi2
-            beta_opt = beta
-            gamma_opt = gamma
+            params_opt = params
         i += 1
-    return chi2_ini, beta_opt, gamma_opt
+    return chi2_ini, params_opt
 
 
 def main():
     temperature_squared_bounded, hc_div_temp_bounded = tools.tab_interval(
-        cnt.squared_temperature_HPHT, cnt.hc_div_temp_HPHT, 25, 150)
+        cnt.squared_temperature_HPHT, cnt.hc_div_temp_HPHT, 36, 144)
     print(minimize_chi2(temperature_squared_bounded,
-          hc_div_temp_bounded, model_linear, 1e6, [0.4, 0.5], [2, 10]))
+          hc_div_temp_bounded, model_linear, 1000, ([0.4, 0.5], [0, 10]), 2))
 
 
 if __name__ == "__main__":
