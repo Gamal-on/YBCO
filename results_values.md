@@ -24,10 +24,9 @@ Note : The linear fit performed between 5 and 12 K might not be completely free 
 
 | Optimization, model     | Temperature range | 𝛽 (en mJ/mol/K⁴) | Θ (en K) | γ (en mJ/mol/K²) | Remarques                                  |
 | :----------------------- | :------------------- | :--------------- | :------- | :--------------- | :----------------------------------------- |
-| Debye non linear       | 0 - 12 K             | 0.910            | 303      | 10.95            |   Matches the MC values, $\chi ² = 45$    |
+| Debye non linear       | 0 - 12 K             | 0.910            | 303      | 10.95            |   Matches the MC values, $\chi ² = 43$    |
 | Debye, non linear     | 0 - 20 K             | 0.992            | 294      | 2.99             |Did not work for the others samples|
-| Debye linear           | 0 -20 K              | 0.975            | 295      | 7.12             | Did not work for the others samples|
-| Debye linear           | 5 - 12 K             | 0.890            | 305      | 13.74            |   Matches the MC values, $\chi ² = 57$  |
-| Debye linear          | 5 - 10 K             | 0.813            | 314      | 17.84            |                                            |
-| Contribution T⁵ non linear    | 0 - 20 K             | 0.910            | 302      | 9.32             |                                            |
-| Contribution T⁵ polynomial      | 5 - 20 K             | 0.880            | 306      | 13.36            |                                            |
+| Debye linear           | 5 - 12 K             | 0.885            | 305      | 14.26            |   Matches the MC values, $\chi ² = 57$  |
+| Debye linear          | 5 - 10 K             | 0.807            | 314      | 18.22            |   Matches the MC values, $\chi ² = 10.26$    |
+| Contribution T⁵ non linear    | 0 - 20 K             | 0.910            | 302      | 9.32 | Matches the MC values, $\chi ² = 97$   | 
+| Contribution T⁵ polynomial      | 5 - 20 K             | 0.879            | 306      | 13.37         |     Matches the MC values, $\chi ² = 134$     |
