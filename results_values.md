@@ -16,7 +16,7 @@ Note : The linear fit performed between 5 and 12 K might not be completely free 
 |--------------------------|----------------------|------------------|----------|-------------------|--------------------------------------------------|
 | Debye non linear ($Cs + \beta x + \gamma,  x=T²$)  | 0 - 12 K             | 0.750            | 324      | 3.16              |same values with MC, $\chi ²$ = 47|
 | Debye linear   ($\beta x + \gamma,  x=T^2$) | 5 - 12 K             | 0.772            | 327      | 6.95              | Matches Monte Carlo $\chi ²$ = 72    |
-| Debye linear   ($\beta x + \gamma,  x=T^2$)| 5 - 10 K             | 0.676            | 334      | 9.00  |  $\chi ²$ =  $\chi ²$ = 168 |     
+| Debye linear   ($\beta x + \gamma,  x=T^2$)| 5 - 10 K             | 0.676            | 334      | 9.00  |  $\chi ²$ = 168 |     
 | Contribution T⁵ non linear ($\beta x + \gamma + \alpha x² + Cs,  x=T^2$)  | 0 - 20 K             | 0.738            | 324      | 2.31              | Same values with MC, $\chi ²$ = 202 |
 | Contribution T⁵ polynomial ($\beta x + \gamma + \alpha x²$) | 5 - 20 K             | 0.711            | 328      | 5.73              |   Matches the values found with MC, $\chi ²$ = 296 |
 
