@@ -80,7 +80,7 @@ def fit_curve_adam(x_data, y_data, a, b, model, bounds, lr=0.01, epochs=1000, be
 
 def plot_fit_gradient(x_data, y_data, a, b, model, method, bounds):
     x, y, = tools.tab_interval(x_data, y_data, a, b)
-    params = method(x_data, y_data, a, b, model, bounds)
+    params, chi2 = method(x_data, y_data, a, b, model, bounds)
 
     # Plot
     plt.figure()
