@@ -3,6 +3,7 @@ import constants as cnt
 import tools
 import scipy.integrate as sci
 import schottky_analysis as sch
+import matplotlib.pyplot as plt
 
 # Al the models are defined like y(x) = C/T(T²)
 
@@ -50,28 +51,33 @@ def model_polynomial(x, beta, gamma, alpha):
 # Model with the integral with quad
 
 
-def model_integral_chat(x, theta, gamma, N):
+def model_integral_chat(x, theta, gamma):
     """Debye model with scipy.integrate.quad for numerical integration
-    x : array-like, squared temperature
+    x : array-like, squared temperature (T^2)
     theta : float, Debye temperature
     gamma : float, constant term
-    N : number of atoms"""
-    y = theta/np.sqrt(x)
-    const = 9e3*N*cnt.k  # problème unité
+
+    Returns the heat capacity per mole (J/mol/K) as a function of T^2.
+    """
+    # y = theta / sqrt(x) = theta / T
+    y = theta / np.sqrt(x)
+    const = 9 * cnt.N * cnt.k *1e3  # 9R, with R = N_A * k_B, factor 1e3 for mJ
 
     def integrand(t):
-        # expm1(t)=exp(t)-1, plus stable
-        return np.exp(t)*(t**4)/(np.expm1(t)**2)
+        # More stable than (np.exp(t)-1)
+        return np.exp(t) * (t**4) / (np.expm1(t)**2)
 
-    # on intègre de 0→y pour chaque valeur de y
+    # Integrate from 0 to y for each y
     I = np.array([sci.quad(integrand, 0, yi, epsabs=1e-8)[0]
-                 for yi in np.atleast_1d(y)])
-    return gamma + const * (1/(y**3))*I
+                  for yi in np.atleast_1d(y)])
+    return gamma + const * (x/(theta)**3) * I
+
+def model_integral_schottky(x, theta, gamma, E, n):
+    return model_integral_chat(x, theta, gamma) + sch.schottky(np.sqrt(x), E, n) / np.sqrt(x)
 
 
 def main():
     pass
-
 
 if __name__ == "__main__":
     main()

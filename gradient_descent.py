@@ -73,7 +73,6 @@ def fit_curve_adam(x_data, y_data, a, b, model, bounds, lr=0.01, epochs=1000, be
         for i, (low, high) in enumerate(bounds):
             params[i] = np.clip(params[i], low, high)
     return params, objective(params)
-    return params, chi2
 
 
 # Plotting the results
@@ -100,8 +99,7 @@ def plot_fit_gradient(x_data, y_data, a, b, model, method, bounds):
 
 
 def main():
-    print(fit_curve_adam(cnt.squared_temperature_HPHT, cnt.hc_div_temp_HPHT,
-          25, 144, model.model_integral_chat, bounds=([300, 500], [0, 10], [1e23, 1e26])))
+    pass
 
 
 if __name__ == "__main__":
