@@ -2,7 +2,7 @@
 
 |  Optimization and model    | Temperature range | β (en mJ/mol/K⁴) | Θ (en K) | γ (en mJ/mol/K²) | Remarques                                        |
 |--------------------------|----------------------|------------------|----------|-------------------|--------------------------------------------------|
-| Debye non linear ($Cs + \beta x + \gamma,  x=T²$)  | 0 - 10 K             | 0.486            | 373      | 1.55           | E seems under-estimated, values consistent with those found with Monte Carlo method, $\chi ² = 8.86$ |
+| Debye non linear ($Cs + \beta x + \gamma,  x=T²$)  | 0 - 10 K             | 0.486           | 373      | 1.55           | E seems under-estimated, values consistent with those found with Monte Carlo method, $\chi ² = 8.86$ |
 | Debye linear  ($\beta x + \gamma,  x=T^2$) | 6 - 12 K             | 0.481            | 375      | 4.43         | Consistent with Monte Carlo, $\chi ² = 12.13$|
 | Debye linear ($\beta x + \gamma,  x=T^2$) | 5 - 12 K             | 0.453            | 382      | 7.05       |  Consistent with Monte Carlo, $\chi ² = 50.59$  |
 | Contribution en T⁵, non linéaire ($\beta x + \gamma + \alpha x² + Cs,  x=T^2$)  | 0 - 20 K             | 0.459            | 380      | 0.566             | Consistent with MC, $\chi ² = 63.78$ |
@@ -14,9 +14,8 @@ Note : The linear fit performed between 5 and 12 K might not be completely free 
 
 | Optimization, model    | Temperature range | β (en mJ/mol/K⁴) | Θ (en K) | γ (en mJ/mol/K²) | Remarques                                        |
 |--------------------------|----------------------|------------------|----------|-------------------|--------------------------------------------------|
-| Debye non linear ($Cs + \beta x + \gamma,  x=T²$)  | 0 - 12 K             | 0.750            | 324      | 3.16              |same values with MC, $\chi ²$ = 47|
-| Debye linear   ($\beta x + \gamma,  x=T^2$) | 5 - 12 K             | 0.772            | 327      | 6.95              | Matches Monte Carlo $\chi ²$ = 72    |
-| Debye linear   ($\beta x + \gamma,  x=T^2$)| 5 - 10 K             | 0.676            | 334      | 9.00  |  $\chi ²$ = 168 |     
+| Debye non linear ($Cs + \beta x + \gamma,  x=T²$)  | 0 - 12 K             | 0.753           | 324      | 2.56             |same values with MC, $\chi ²$ = 46|
+| Debye linear   ($\beta x + \gamma,  x=T^2$) | 5 - 12 K             | 0.720            | 327      | 6.95              | Matches Monte Carlo $\chi ²$ = 72    |    
 | Contribution T⁵ non linear ($\beta x + \gamma + \alpha x² + Cs,  x=T^2$)  | 0 - 20 K             | 0.738            | 324      | 2.31              | Same values with MC, $\chi ²$ = 202 |
 | Contribution T⁵ polynomial ($\beta x + \gamma + \alpha x²$) | 5 - 20 K             | 0.711            | 328      | 5.73              |   Matches the values found with MC, $\chi ²$ = 296 |
 
