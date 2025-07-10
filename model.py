@@ -76,6 +76,14 @@ def model_integral_schottky(x, theta, gamma, E, n):
     return model_integral_chat(x, theta, gamma) + sch.schottky(np.sqrt(x), E, n) / np.sqrt(x)
 
 
+def model_einstein(x, w1, w2, F, gamma, E, n) :
+    y = np.sqrt(x) 
+    schottky = sch.schottky(y, E, n)/y
+    mode_phonon1 = F*(w1/y)**2 * np.exp(w1/y) / (np.expm1(w1/y)**2)
+    mode_phonon2 = (1-F)*(w2/y)**2 * np.exp(w2/y) / (np.expm1(w2/y)**2)
+    return gamma + schottky + (mode_phonon1 + mode_phonon2) * 13 * 3 * cnt.r/y
+
+
 def main():
     pass
 

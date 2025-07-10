@@ -12,7 +12,7 @@ import model
 def curve_fit(x_data, y_data, a, b, model, bounds):
     x, y, = tools.tab_interval(x_data, y_data, a, b)
     res = sc.curve_fit(model, x, y, bounds=bounds)
-    return res[0]
+    return res[0], mc.chi2(x, y, model, res[0])
 
 # Fit a curve using the BFGS method
 
