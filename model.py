@@ -61,7 +61,7 @@ def model_integral_chat(x, theta, gamma):
     """
     # y = theta / sqrt(x) = theta / T
     y = theta / np.sqrt(x)
-    const = 9 * cnt.N * cnt.k *1e3  # 9R, with R = N_A * k_B, factor 1e3 for mJ
+    const = 9 * cnt.N * cnt.k * 1e3  # 9R, with R = N_A * k_B, factor 1e3 for mJ
 
     def integrand(t):
         # More stable than (np.exp(t)-1)
@@ -72,20 +72,40 @@ def model_integral_chat(x, theta, gamma):
                   for yi in np.atleast_1d(y)])
     return gamma + const * (x/(theta)**3) * I
 
+
 def model_integral_schottky(x, theta, gamma, E, n):
     return model_integral_chat(x, theta, gamma) + sch.schottky(np.sqrt(x), E, n) / np.sqrt(x)
 
 
-def model_einstein(x, w1, w2, F, gamma, E, n) :
-    y = np.sqrt(x) 
+def model_einstein_schottky(x, w1, w2, F, gamma, E, n):
+    """Einstein model with Schottky contribution
+    x : array-like, squared temperature (T^2)
+    w1 : float, Einstein frequency 1 (in K)
+    w2 : float, Einstein frequency 2 (in K)
+    F : float, proportion of the first Einstein mode    """
+    y = np.sqrt(x)
     schottky = sch.schottky(y, E, n)/y
     mode_phonon1 = F*(w1/y)**2 * np.exp(w1/y) / (np.expm1(w1/y)**2)
     mode_phonon2 = (1-F)*(w2/y)**2 * np.exp(w2/y) / (np.expm1(w2/y)**2)
-    return gamma + schottky + (mode_phonon1 + mode_phonon2) * 13 * 3 * cnt.r/y
+    return gamma + schottky + (mode_phonon1 + mode_phonon2) * 13 * 3 * (cnt.r/y) * 1e3
+
+
+def model_einstein(x, w1, w2, F, gamma):
+    """Einstein model without Schottky contribution
+    x : array-like, squared temperature (T^2)
+    w1 : float, Einstein frequency 1 (in K)
+    w2 : float, Einstein frequency 2 (in K)
+    F : float, proportion of the first Einstein mode
+    gamma : float, constant term"""
+    y = np.sqrt(x)
+    mode_phonon1 = F*(w1/y)**2 * np.exp(w1/y) / (np.expm1(w1/y)**2)
+    mode_phonon2 = (1-F)*(w2/y)**2 * np.exp(w2/y) / (np.expm1(w2/y)**2)
+    return gamma + (mode_phonon1 + mode_phonon2) * 13 * 3 * (cnt.r/y) * 1e3
 
 
 def main():
     pass
+
 
 if __name__ == "__main__":
     main()
