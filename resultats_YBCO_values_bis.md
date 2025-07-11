@@ -1,4 +1,4 @@
-**Optimally doped YBCO \- HPHT**
+## Optimally doped YBCO \- HPHT
 
 | Modèle | Ajustement | Plage de température | 𝛽 (en mJ/mol/K⁴) | Θ (en K) | γ (en mJ/mol/K²) | $\chi ^2$ |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -8,7 +8,8 @@
 | Debye, contribution phononique par $\beta T^3 + \alpha T^5$ : $y(x) = \alpha x^2 + \beta x + \gamma$| Descente de gradient \+ Monte Carlo | 6 \- 20 K (Après Schottky) | 0.427 | 388 | 5.03 | 82.8 |
 | Debye, contribution phononique non approximée : $y(x) = C_{s}(x) + \gamma +  9 k_B N (\frac{T}{\theta_D})^3 \int \frac{x^4 e^x}{(e^x - 1)^2} dx$ | Descente de gradient \+ Monte Carlo | 0 \- 12 K | / | 367 | 10^(-17) | 14.8 |
 
-**Overdoped YBCO**
+
+## Overdoped YBCO
 
 | Modèle | Ajustement | Plage de température | 𝛽 (en mJ/mol/K⁴) | Θ (en K) | γ (en mJ/mol/K²) | $\chi ^2$ |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
