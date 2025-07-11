@@ -1,3 +1,5 @@
+Only the adjustments that visually appeared to accurately describe the data are listed
+
 ## Optimally doped YBCO, HPHT
 
 |  Optimization and model    | Temperature range | β (en mJ/mol/K⁴) | Θ (en K) | γ (en mJ/mol/K²) | Remarques                                        |
