@@ -1,7 +1,7 @@
 import numpy as np
 import data.constants as cnt
 import scipy.integrate as sci
-import schottky_analysis as sch
+import algo.schottky_analysis as sch
 
 # Al the models are defined like y(x) = C/T(T²)
 
