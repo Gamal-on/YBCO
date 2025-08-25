@@ -1,10 +1,8 @@
 import numpy as np
-import data.constants as cnt
 import matplotlib.pyplot as plt
 import tools
 import scipy.optimize as sc
 import monte_carlo as mc
-import model
 
 # Fitting the experimental data
 

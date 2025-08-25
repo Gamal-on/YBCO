@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import tools
+import algo.tools
 import data.constants as cnt
 
 # Schottkx anomaly

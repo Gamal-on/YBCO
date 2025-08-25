@@ -1,9 +1,6 @@
 import numpy as np
 import numpy.random as rd
-import data.constants as cnt
-import tools
-import scipy.integrate as sci
-import schottky_analysis as sch
+import algo.tools
 import matplotlib.pyplot as plt
 
 
