@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -13,7 +14,8 @@ masse_sample = 8.45e-3  # g
 
 # File reading
 
-data_file = open("fork_ISISA_1906.txt", "r",  encoding="latin-1")
+DATA_PATH = os.path.join(os.path.dirname(__file__), 'fork_ISISA_1906.txt')
+data_file = open(DATA_PATH, "r",  encoding="latin-1")
 lignes = data_file.readlines()
 data_file.close()
 

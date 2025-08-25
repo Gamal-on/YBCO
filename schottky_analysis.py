@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import tools
-import constants as cnt
+import data.constants as cnt
 
 # Schottkx anomaly
 

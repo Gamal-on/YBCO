@@ -1,5 +1,5 @@
 import numpy as np
-import constants as cnt
+import data.constants as cnt
 import matplotlib.pyplot as plt
 import tools
 import scipy.optimize as sc

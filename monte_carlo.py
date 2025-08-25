@@ -1,6 +1,6 @@
 import numpy as np
 import numpy.random as rd
-import constants as cnt
+import data.constants as cnt
 import tools
 import scipy.integrate as sci
 import schottky_analysis as sch

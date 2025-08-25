@@ -1,6 +1,5 @@
 import numpy as np
-import constants as cnt
-import tools
+import data.constants as cnt
 import scipy.integrate as sci
 import schottky_analysis as sch
 import matplotlib.pyplot as plt

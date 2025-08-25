@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -9,11 +10,12 @@ mBa = 137.3270
 mCu = 63.5460
 mO = 15.9994
 masse_molaire = 666.22  # g.mol
-masse_sample = 6.81e-3  # g
+masse_sample = 8.45e-3  # g
 
 # File reading
 
-data_file = open("fork_P240917.txt", "r",  encoding="latin-1")
+DATA_PATH = os.path.join(os.path.dirname(__file__), 'fork_HPHT_YBCO.txt')
+data_file = open(DATA_PATH, "r",  encoding="latin-1")
 lignes = data_file.readlines()
 data_file.close()
 
@@ -43,14 +45,15 @@ for ligne in donnees_lignes:
 
 # Arrays:
 
-temperature_P24 = np.array(colonnes["Sample Temp (Kelvin)"])
+temperature_HPHT = np.array(colonnes["Sample Temp (Kelvin)"])
 # final heat capacity (without the addenda), mJ/K.mol
-sample_HC_P24 = np.array(colonnes["Samp HC (mJ/mole-K)"])
-
-# np.array(colonnes["Samp HC Err (mJ/mole-K)"])  # error on final HC
-err_sample_HC_P24 = 0.02*sample_HC_P24
+sample_HC_HPHT = np.array(colonnes["Samp HC (mJ/mole-K)"])
+# addenda heat capacity microJ/K
+addenda_HC_HPHT = np.array(colonnes["Addenda HC (µJ/K)"])
+total_HC_HPHT = np.array(colonnes["Total HC (µJ/K)"])  # row measurment microJ/mol
+err_sample_HC_HPHT =  0.02*sample_HC_HPHT   #np.array(colonnes["Samp HC Err (mJ/mole-K)"])  # error on final HC
 # no error in the data concerninf temperature
-err_temperature_P24 = 1e-2*np.ones(len(err_sample_HC_P24))
+err_temperature_HPHT = 1e-2*np.ones(len(err_sample_HC_HPHT))
 
 
 def main():
