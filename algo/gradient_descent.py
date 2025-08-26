@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import algo.tools
+import algo.tools as tools
 import scipy.optimize as sc
 import algo.monte_carlo as mc
 

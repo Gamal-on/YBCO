@@ -1,6 +1,14 @@
-## YBCO Heat Capacity Analysis
+# YBCO Heat Capacity Analysis
 
-### Objective:
+## Installation and Execution
+
+Clone the repository and install dependencies using:
+
+```bash
+pip install -r requirements.txt
+```
+
+## Objective:
 
 - Visualize and interpret the experimental data from specific heat measurements for the YBCO compound
 
@@ -8,7 +16,7 @@
 
 - Study the effect of doping in the heavily overdoped regime
 
-### Files:
+## Files:
 
 - Python scripts : main files to perform the fit
 

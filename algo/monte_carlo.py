@@ -1,6 +1,6 @@
 import numpy as np
 import numpy.random as rd
-import algo.tools
+import algo.tools as tools
 import matplotlib.pyplot as plt
 
 
