@@ -2,7 +2,9 @@
 
 Processing and analysis of low-temperature specific-heat measurements on YBa₂Cu₃O₇₊ₓ samples (optimally doped and heavily overdoped). The repository contains reproducible fitting routines, notebooks for data visualization, and the extracted fit parameters. 
 
-![Specific heat of YBCO : ](images/data_plot_paper.png)
+![Specific heat of YBCO : ](image/data_plot_paper.png)
+
+Comparison of the low-temperature specific heat of the high-pressure-high-temperature (HPHT) YBCO sample and overdoped (ISIS) sample with previously reported data on overdoped La$_{2-x}$ $S_x$ Cu$O_4$. The data are normalized to the number of planar Cu atoms.
 
 ## Installation and Execution
 
