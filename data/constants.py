@@ -1,15 +1,15 @@
-from .data_P24 import err_sample_HC_P24
-from .data_P24 import sample_HC_P24
-from .data_P24 import err_temperature_P24
-from .data_P24 import temperature_P24
-from .data_ISIS import temperature_ISIS
-from .data_ISIS import sample_HC_ISIS
-from .data_ISIS import err_sample_HC_ISIS
-from .data_ISIS import err_temperature_ISIS
-from .data_HPHT import temperature_HPHT
-from .data_HPHT import sample_HC_HPHT
-from .data_HPHT import err_sample_HC_HPHT
-from .data_HPHT import err_temperature_HPHT
+from data.data_P24 import err_sample_HC_P24
+from data.data_P24 import sample_HC_P24
+from data.data_P24 import err_temperature_P24
+from data.data_P24 import temperature_P24
+from data.data_ISIS import temperature_ISIS
+from data.data_ISIS import sample_HC_ISIS
+from data.data_ISIS import err_sample_HC_ISIS
+from data.data_ISIS import err_temperature_ISIS
+from data.data_HPHT import temperature_HPHT
+from data.data_HPHT import sample_HC_HPHT
+from data.data_HPHT import err_sample_HC_HPHT
+from data.data_HPHT import err_temperature_HPHT
 
 # Constants
 

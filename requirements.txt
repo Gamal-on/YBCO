@@ -1,4 +1,17 @@
-numpy
-matplotlib
-scipy
-fitutils
+# Core scientific stack
+numpy>=1.22,<2.0
+scipy>=1.8,<2.0
+pandas>=1.4,<2.0
+matplotlib>=3.5,<4.0
+
+# Fitting / modelling
+lmfit>=1.0
+emcee>=3.0        # optional: for MCMC-based fits
+
+# Utilities
+tqdm>=4.60
+uncertainties>=3.1
+
+# Notebook / plotting helpers (if you run notebooks interactively)
+notebook>=6.4
+seaborn>=0.12     # optional, for nicer plots
